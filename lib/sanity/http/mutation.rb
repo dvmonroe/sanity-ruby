@@ -82,9 +82,9 @@ module Sanity
       end
 
       def query_params
-        query_set.to_h.flat_map do |key, val|
-          "#{key.to_s.camelize(:lower)}=#{val}"
-        end.join("&")
+        query_set.to_h.transform_keys do |key|
+          key.to_s.camelize(:lower)
+        end.to_query
       end
 
       def uri
