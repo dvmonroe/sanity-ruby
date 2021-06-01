@@ -16,7 +16,7 @@ module Sanity
       def queryable(**options)
         options.fetch(:only, DEFAULT_KLASS_QUERIES).each do |query|
           define_singleton_method(query) do |*args|
-            Module.const_get("Sanity::Http::#{query.to_s.classify}").call(*args)
+            "Sanity::Http::#{query.to_s.classify}".constantize.call(*args)
           end
         end
       end

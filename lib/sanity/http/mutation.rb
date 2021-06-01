@@ -2,9 +2,9 @@
 
 require "active_support/core_ext/object/to_query"
 require "forwardable"
+require "json"
 require "net/http"
 require "uri"
-require "json"
 
 module Sanity
   module Http

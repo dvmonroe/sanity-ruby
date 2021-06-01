@@ -19,13 +19,13 @@ module Sanity
         options.fetch(:only, ALL_MUTATIONS).each do |mutation|
           if DEFAULT_KLASS_MUTATIONS.include? mutation.to_sym
             define_singleton_method(mutation) do |**args|
-              Module.const_get("Sanity::Http::#{mutation.to_s.classify}").call(**args.merge(resource_klass: self))
+              "Sanity::Http::#{mutation.to_s.classify}".constantize.call(**args.merge(resource_klass: self))
             end
           end
 
           if DEFAULT_INSTANCE_MUTATIONS.include? mutation.to_sym
             define_method(mutation) do |**attributes|
-              Module.const_get("Sanity::Http::#{mutation.to_s.classify}").call(**attributes)
+              "Sanity::Http::#{mutation.to_s.classify}".constantize.call(**attributes)
             end
           end
         end
