@@ -1,6 +1,21 @@
 # frozen_string_literal: true
 
 module Sanity
+  # Mutatable is responsible for setting the appropriate class methods
+  # that invoke Sanity::Http's mutatable classes
+  #
+  # The mutatable marco can limit what queries are accessible to the
+  # mutatable object
+  #
+  # @example provides default class methods
+  #   mutatable
+  #
+  # @example only add the `.create` method
+  #   mutatable only: %i(create)
+  #
+  # @example only add the `.create_or_replace`& `#create_or_replace` methods
+  #   mutatable only: %i(create_or_replace)
+  #
   module Mutatable
     class << self
       def included(base)

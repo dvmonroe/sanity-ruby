@@ -6,5 +6,5 @@ module Sanity
     queryable
     attribute :_id, default: ""
     attribute :_type, default: ""
-  end
+   end
 end
