@@ -24,8 +24,8 @@ module Sanity
     end
 
     module ClassMethods
-      DEFAULT_KLASS_MUTATIONS = %i(create create_or_replace create_if_missing).freeze
-      DEFAULT_INSTANCE_MUTATIONS = %i(create_or_replace patch destroy).freeze
+      DEFAULT_KLASS_MUTATIONS = %i(create create_or_replace create_if_missing patch delete).freeze
+      DEFAULT_INSTANCE_MUTATIONS = %i(create create_or_replace create_if_missing delete).freeze
       ALL_MUTATIONS = DEFAULT_KLASS_MUTATIONS | DEFAULT_INSTANCE_MUTATIONS
 
       private
@@ -39,11 +39,15 @@ module Sanity
           end
 
           if DEFAULT_INSTANCE_MUTATIONS.include? mutation.to_sym
-            define_method(mutation) do |**attributes|
-              "Sanity::Http::#{mutation.to_s.classify}".constantize.call(**attributes)
+            define_method(mutation) do |**args|
+              "Sanity::Http::#{mutation.to_s.classify}".constantize.call(
+                **args.merge(params: attributes, resource_klass: self.class)
+              )
             end
           end
         end
+
+        define_singleton_method("mutatable_api_endpoint") { options.fetch(:api_endpoint, "") }
       end
     end
   end

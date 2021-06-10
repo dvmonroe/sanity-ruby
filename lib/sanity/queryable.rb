@@ -26,14 +26,21 @@ module Sanity
     module ClassMethods
       DEFAULT_KLASS_QUERIES = %i(find where).freeze
 
+      # See https://www.sanity.io/docs/http-query & https://www.sanity.io/docs/http-doc
+      QUERY_ENDPOINTS = {
+        find: "data/doc/",
+        where: "data/query/"
+      }.freeze
+
       private
 
       # @private
       def queryable(**options)
         options.fetch(:only, DEFAULT_KLASS_QUERIES).each do |query|
-          define_singleton_method(query) do |*args|
-            "Sanity::Http::#{query.to_s.classify}".constantize.call(*args)
+          define_singleton_method(query) do |**args|
+            "Sanity::Http::#{query.to_s.classify}".constantize.call(**args.merge(resource_klass: self))
           end
+          define_singleton_method("#{query}_api_endpoint") { QUERY_ENDPOINTS[query] }
         end
       end
     end

@@ -2,7 +2,7 @@
 
 module Sanity
   module Http
-    class Destroy
+    class Delete
       include Sanity::Http::Mutation
     end
   end

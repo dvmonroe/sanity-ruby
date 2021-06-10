@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
 module Sanity
+  # Attributable is responsible for setting the appropriate attributes
+  # on an object in memory
+  #
+  # The attribute marco is used to define the available attributes and
+  # the default return value if applicable
+  #
+  # @example provides getter and setter methods for `_id` and sets the default value to an empty string
+  #   attribute :_id, default: ""
+  #
   module Attributable
     class << self
       def included(base)

@@ -11,9 +11,13 @@ describe Sanity::Mutatable do
       it { assert_respond_to klass, :create }
       it { assert_respond_to klass, :create_or_replace }
       it { assert_respond_to klass, :create_if_missing }
+      it { assert_respond_to klass, :delete }
+      it { assert_respond_to klass, :patch }
+
+      it { assert_respond_to subject, :create }
       it { assert_respond_to subject, :create_or_replace }
-      it { assert_respond_to subject, :patch }
-      it { assert_respond_to subject, :destroy }
+      it { assert_respond_to subject, :create_if_missing }
+      it { assert_respond_to subject, :delete }
     end
 
     context "with mutatable limitations defined" do
@@ -21,13 +25,17 @@ describe Sanity::Mutatable do
       subject { klass.new }
 
       it { assert_respond_to klass, :create }
-      it { assert_respond_to subject, :patch }
+      it { assert_respond_to subject, :create }
+
+      it { assert_respond_to klass, :patch }  
 
       it { refute_respond_to klass, :create_or_replace }
       it { refute_respond_to klass, :create_if_missing }
+      it { refute_respond_to klass, :delete }
 
+      it { refute_respond_to subject, :create_if_missing }
       it { refute_respond_to subject, :create_or_replace }
-      it { refute_respond_to subject, :destroy }
+      it { refute_respond_to subject, :delete }
     end
   end
 end
