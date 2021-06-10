@@ -8,17 +8,10 @@ jobs:
         # Due to https://github.com/actions/runner/issues/849, we have to use quotes for '3.0'
         ruby: [2.6, 2.7, "3.0"]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-
-      - name: Tests
-        run: bundle exec rake test
-
-      - name: Lint
-        run: bundle exec rake lint
+      - run: bundle exec rake test
+      - run: bundle exec rake lint
