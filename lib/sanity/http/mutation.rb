@@ -15,7 +15,7 @@ module Sanity
           base.extend(ClassMethods)
           base.include(Sanity::Delegator)
           base.delegate(:project_id, :api_version, :dataset, :token, to: :"Sanity.config")
-          base.delegate(:mutatable_api_endpoint, to: :"resource_klass")
+          base.delegate(:mutatable_api_endpoint, to: :resource_klass)
         end
       end
 
@@ -26,7 +26,7 @@ module Sanity
       end
 
       # See https://www.sanity.io/docs/http-mutations#visibility-937bc4250c79
-      ALLOWED_VISIBILITY = %i(sync async deferred)
+      ALLOWED_VISIBILITY = %i[sync async deferred]
 
       # Default result wrapper if not provided
       # It must respond to the class method `.call` and expect
@@ -34,13 +34,13 @@ module Sanity
       DEFAULT_RESULT_WRAPPER = Sanity::Http::ResultWrapper
 
       # See https://www.sanity.io/docs/http-mutations#aa493b1c2524
-      REQUEST_KEY = "mutations".freeze
+      REQUEST_KEY = "mutations"
 
       # See https://www.sanity.io/docs/http-mutations#952b77deb110
       QUERY_PARAMS = {
         return_ids: false,
         return_documents: false,
-        visibility: :sync,
+        visibility: :sync
       }.freeze
 
       attr_reader :options, :params, :resource_klass, :query_set, :result_wrapper
@@ -64,7 +64,7 @@ module Sanity
       end
 
       def call
-        Net::HTTP.post(uri, { "#{REQUEST_KEY}": body }.to_json, headers).then do |result|
+        Net::HTTP.post(uri, {"#{REQUEST_KEY}": body}.to_json, headers).then do |result|
           block_given? ? yield(result_wrapper.call(result)) : result_wrapper.call(result)
         end
       end
@@ -78,9 +78,9 @@ module Sanity
       def body
         case params
         when Array
-          Array.wrap(params.map { |pam| { "#{body_key}": pam } })
+          Array.wrap(params.map { |pam| {"#{body_key}": pam} })
         when Hash
-          Array.wrap({ "#{body_key}": params })
+          Array.wrap({"#{body_key}": params})
         else
           []
         end
@@ -93,7 +93,7 @@ module Sanity
       def headers
         {
           "Content-Type": "application/json",
-          "Authorization": "Bearer #{token}"
+          Authorization: "Bearer #{token}"
         }
       end
 

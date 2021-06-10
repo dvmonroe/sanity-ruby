@@ -24,7 +24,7 @@ module Sanity
     end
 
     module ClassMethods
-      DEFAULT_KLASS_QUERIES = %i(find where).freeze
+      DEFAULT_KLASS_QUERIES = %i[find where].freeze
 
       # See https://www.sanity.io/docs/http-query & https://www.sanity.io/docs/http-doc
       QUERY_ENDPOINTS = {

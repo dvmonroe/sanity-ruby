@@ -13,3 +13,4 @@ gem "guard"
 gem "guard-minitest"
 gem "yard"
 
+gem "standard"
