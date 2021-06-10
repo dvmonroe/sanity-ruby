@@ -19,7 +19,7 @@ module Sanity
     attribute :_id, default: ""
     attribute :_type, default: ""
     # See https://www.sanity.io/docs/http-mutations#ac77879076d4
-    mutatable api_endpoint: "data/mutate/"
+    mutatable api_endpoint: "data/mutate"
     queryable
    end
 end

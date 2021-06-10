@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
-require "forwardable"
-
 module Sanity
   module Http
     module Query
       class << self
         def included(base)
           base.extend(ClassMethods)
-          base.extend(Forwardable)
-          base.def_delegators(:"Sanity.config", :project_id, :api_version, :dataset, :token)
+          base.include(Sanity::Delegator)
+          base.delegate(:project_id, :api_version, :dataset, :token, to: :"Sanity.config")
         end
       end
 

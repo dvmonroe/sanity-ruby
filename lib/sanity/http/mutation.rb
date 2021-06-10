@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "active_support/core_ext/object/to_query"
-require "forwardable"
 require "json"
 require "net/http"
 require "uri"
@@ -14,9 +13,9 @@ module Sanity
       class << self
         def included(base)
           base.extend(ClassMethods)
-          base.extend(Forwardable)
-          base.def_delegators(:"Sanity.config", :project_id, :api_version, :dataset, :token)
-          base.def_delegators(:"resource_klass", :mutatable_api_endpoint)
+          base.include(Sanity::Delegator)
+          base.delegate(:project_id, :api_version, :dataset, :token, to: :"Sanity.config")
+          base.delegate(:mutatable_api_endpoint, to: :"resource_klass")
         end
       end
 

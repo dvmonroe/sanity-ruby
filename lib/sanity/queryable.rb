@@ -28,8 +28,8 @@ module Sanity
 
       # See https://www.sanity.io/docs/http-query & https://www.sanity.io/docs/http-doc
       QUERY_ENDPOINTS = {
-        find: "data/doc/",
-        where: "data/query/"
+        find: "data/doc",
+        where: "data/query"
       }.freeze
 
       private
