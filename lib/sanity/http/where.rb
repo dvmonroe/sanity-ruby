@@ -4,7 +4,7 @@ module Sanity
   module Http
     class Where
       include Sanity::Http::Query
-      def_delegators :resource_klass, :where_api_endpoint
+      delegate :where_api_endpoint, to: :resource_klass
 
       private
 
