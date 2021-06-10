@@ -5,6 +5,7 @@ require "active_support/core_ext/array/wrap"
 
 require "sanity/version"
 require "sanity/configuration"
+require "sanity/delegator"
 
 require "sanity/http"
 

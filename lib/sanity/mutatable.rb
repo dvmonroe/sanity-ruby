@@ -1,6 +1,21 @@
 # frozen_string_literal: true
 
 module Sanity
+  # Mutatable is responsible for setting the appropriate class methods
+  # that invoke Sanity::Http's mutatable classes
+  #
+  # The mutatable marco can limit what queries are accessible to the
+  # mutatable object
+  #
+  # @example provides default class methods
+  #   mutatable
+  #
+  # @example only add the `.create` method
+  #   mutatable only: %i(create)
+  #
+  # @example only add the `.create_or_replace`& `#create_or_replace` methods
+  #   mutatable only: %i(create_or_replace)
+  #
   module Mutatable
     class << self
       def included(base)
@@ -9,8 +24,8 @@ module Sanity
     end
 
     module ClassMethods
-      DEFAULT_KLASS_MUTATIONS = %i(create create_or_replace create_if_missing).freeze
-      DEFAULT_INSTANCE_MUTATIONS = %i(create_or_replace patch destroy).freeze
+      DEFAULT_KLASS_MUTATIONS = %i(create create_or_replace create_if_missing patch delete).freeze
+      DEFAULT_INSTANCE_MUTATIONS = %i(create create_or_replace create_if_missing delete).freeze
       ALL_MUTATIONS = DEFAULT_KLASS_MUTATIONS | DEFAULT_INSTANCE_MUTATIONS
 
       private
@@ -19,16 +34,20 @@ module Sanity
         options.fetch(:only, ALL_MUTATIONS).each do |mutation|
           if DEFAULT_KLASS_MUTATIONS.include? mutation.to_sym
             define_singleton_method(mutation) do |**args|
-              Module.const_get("Sanity::Http::#{mutation.to_s.classify}").call(**args.merge(resource_klass: self))
+              "Sanity::Http::#{mutation.to_s.classify}".constantize.call(**args.merge(resource_klass: self))
             end
           end
 
           if DEFAULT_INSTANCE_MUTATIONS.include? mutation.to_sym
-            define_method(mutation) do |**attributes|
-              Module.const_get("Sanity::Http::#{mutation.to_s.classify}").call(**attributes)
+            define_method(mutation) do |**args|
+              "Sanity::Http::#{mutation.to_s.classify}".constantize.call(
+                **args.merge(params: attributes, resource_klass: self.class)
+              )
             end
           end
         end
+
+        define_singleton_method("mutatable_api_endpoint") { options.fetch(:api_endpoint, "") }
       end
     end
   end

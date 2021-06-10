@@ -1,8 +1,23 @@
 # Sanity
 
-TODO
+The Sanity Ruby library provides convenient access to the Sanity API from applications written in Ruby. It includes a pre-defined set of classes for API resources that initialize themselves dynamically from API responses when applicable.
 
-## Installation
+The library also provides other features. For example:
+
+    Easy configuration for fast setup and use.
+    A pre-defined class to help make any PORO a "sanity resource"
+    Extensibility in overriding the wrapper of your API response results
+
+## Contents
+
+- [Getting Started](#getting-started)
+- [Mutating](#mutating)
+- [Querying](#querying)
+- [Development](#development)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Getting Started
 
 Add this line to your application's Gemfile:
 
@@ -10,15 +25,59 @@ Add this line to your application's Gemfile:
 gem 'sanity-ruby'
 ```
 
-And then execute:
+To create a new document:
 
-    $ bundle install
+```ruby
+Sanity::Document.create(params: {_type: "user", first_name: "Carl", last_name: "Sagan"})
+```
 
-Or install it yourself as:
+To create a new asset:
 
-    $ gem install sanity-ruby
+```ruby
+# TODO
+```
 
-## Usage
+To make any PORO a sanity resource:
+
+```ruby
+class User < Sanity::Resource
+  attribute :_id, default: ""
+  attribute :_type: default: ""
+  mutatable only: %i(create delete)
+  queryable
+end
+```
+
+To create a new document in Sanity:
+
+```ruby
+User.create(params: { first_name: "Carl", last_name: "Sagan" })
+```
+
+or if you need to validate the object in your application first:
+
+```ruby
+user = User.new(first_name: "Carl", last_name: "Sagan")
+# your business logic here...
+user.create
+```
+
+To make any PORO act like a sanity resource:
+
+```ruby
+class User
+  include Sanity::Mutatable
+  include Sanity::Queryable
+  queryable
+  mutatable
+end
+```
+
+## Mutating
+
+TODO
+
+## Querying
 
 TODO
 
