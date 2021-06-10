@@ -4,7 +4,7 @@ module Sanity
   module Http
     class Find
       include Sanity::Http::Query
-      def_delegators :"resource_klass", :find_api_endpoint
+      delegate :find_api_endpoint, to: :resource_klass
 
       private
 

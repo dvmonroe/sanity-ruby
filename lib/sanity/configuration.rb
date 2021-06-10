@@ -18,11 +18,11 @@ module Sanity
     attr_accessor :use_cdn
 
     def initialize
-      @project_id       = ""
-      @dataset          = ""
-      @api_version      = ""
-      @token            = ""
-      @use_cdn          = false
+      @project_id = ""
+      @dataset = ""
+      @api_version = ""
+      @token = ""
+      @use_cdn = false
     end
   end
 
@@ -31,7 +31,7 @@ module Sanity
   end
 
   class << self
-    alias config configuration
+    alias_method :config, :configuration
   end
 
   def self.configuration=(config)

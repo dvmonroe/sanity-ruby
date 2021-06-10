@@ -21,5 +21,5 @@ module Sanity
     # See https://www.sanity.io/docs/http-mutations#ac77879076d4
     mutatable api_endpoint: "data/mutate"
     queryable
-   end
+  end
 end
