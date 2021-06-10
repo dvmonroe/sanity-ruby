@@ -11,9 +11,9 @@ require "pry"
 
 require "sanity"
 
-reporter_options = { color: true }
+reporter_options = {color: true}
 Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(reporter_options)]
 
 module Kernel
-  alias context describe
+  alias_method :context, :describe
 end

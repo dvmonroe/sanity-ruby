@@ -12,7 +12,6 @@ module Sanity
       end
 
       module ClassMethods
-
         def call(**args)
           new(**args).call
         end
