@@ -16,7 +16,7 @@ module Sanity
     module Strings
       refine String do
         def camelize_lower
-          split("_")[..-1].each_with_index.map do |val, idx|
+          split("_")[0..].each_with_index.map do |val, idx|
             idx != 0 ? val.capitalize : val
           end.join
         end
