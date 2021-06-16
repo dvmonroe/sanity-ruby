@@ -2,14 +2,8 @@
 
 module Sanity
   module Http
-    class CreateIfNotExist
+    class CreateIfNotExists
       include Sanity::Http::Mutation
-
-      private
-
-      def body_key
-        "createIfNotExists"
-      end
     end
   end
 end
