@@ -16,6 +16,8 @@ module Sanity
   # @example only add the `.find` method
   #   queryable only: %i(find)
   #
+  using Sanity::Refinements::Strings
+
   module Queryable
     class << self
       def included(base)
@@ -38,7 +40,7 @@ module Sanity
       def queryable(**options)
         options.fetch(:only, DEFAULT_KLASS_QUERIES).each do |query|
           define_singleton_method(query) do |**args|
-            "Sanity::Http::#{query.to_s.classify}".constantize.call(**args.merge(resource_klass: self))
+            Module.const_get("Sanity::Http::#{query.to_s.classify}").call(**args.merge(resource_klass: self))
           end
           define_singleton_method("#{query}_api_endpoint") { QUERY_ENDPOINTS[query] }
         end

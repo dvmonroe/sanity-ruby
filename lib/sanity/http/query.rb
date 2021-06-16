@@ -6,8 +6,8 @@ module Sanity
       class << self
         def included(base)
           base.extend(ClassMethods)
-          base.include(Sanity::Delegator)
-          base.delegate(:project_id, :api_version, :dataset, :token, to: :"Sanity.config")
+          base.extend(Forwardable)
+          base.delegate(%i[project_id api_version dataset token] => :"Sanity.config")
         end
       end
 

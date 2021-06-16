@@ -9,6 +9,6 @@ describe Sanity::Http::Mutation do
   it { assert_equal "mutations", klass::REQUEST_KEY }
 
   it do
-    assert_equal({return_ids: false, return_documents: false, visibility: :sync}, klass::QUERY_PARAMS)
+    assert_equal({return_ids: false, return_documents: false, visibility: :sync}, klass::DEFAULT_QUERY_PARAMS)
   end
 end

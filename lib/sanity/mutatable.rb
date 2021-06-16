@@ -16,6 +16,8 @@ module Sanity
   # @example only add the `.create_or_replace`& `#create_or_replace` methods
   #   mutatable only: %i(create_or_replace)
   #
+  using Sanity::Refinements::Strings
+
   module Mutatable
     class << self
       def included(base)
@@ -34,13 +36,13 @@ module Sanity
         options.fetch(:only, ALL_MUTATIONS).each do |mutation|
           if DEFAULT_KLASS_MUTATIONS.include? mutation.to_sym
             define_singleton_method(mutation) do |**args|
-              "Sanity::Http::#{mutation.to_s.classify}".constantize.call(**args.merge(resource_klass: self))
+              Module.const_get("Sanity::Http::#{mutation.to_s.classify}").call(**args.merge(resource_klass: self))
             end
           end
 
           if DEFAULT_INSTANCE_MUTATIONS.include? mutation.to_sym
             define_method(mutation) do |**args|
-              "Sanity::Http::#{mutation.to_s.classify}".constantize.call(
+              Module.const_get("Sanity::Http::#{mutation.to_s.classify}").call(
                 **args.merge(params: attributes, resource_klass: self.class)
               )
             end

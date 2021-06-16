@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
-require "active_support/core_ext/object/to_query"
 require "json"
 require "net/http"
 require "uri"
 
 require "sanity/http/result_wrapper"
+
+using Sanity::Refinements::Strings
+using Sanity::Refinements::Arrays
 
 module Sanity
   module Http
@@ -13,9 +15,9 @@ module Sanity
       class << self
         def included(base)
           base.extend(ClassMethods)
-          base.include(Sanity::Delegator)
-          base.delegate(:project_id, :api_version, :dataset, :token, to: :"Sanity.config")
-          base.delegate(:mutatable_api_endpoint, to: :resource_klass)
+          base.extend(Forwardable)
+          base.delegate(%i[project_id api_version dataset token] => :"Sanity.config")
+          base.delegate(mutatable_api_endpoint: :resource_klass)
         end
       end
 
@@ -37,7 +39,7 @@ module Sanity
       REQUEST_KEY = "mutations"
 
       # See https://www.sanity.io/docs/http-mutations#952b77deb110
-      QUERY_PARAMS = {
+      DEFAULT_QUERY_PARAMS = {
         return_ids: false,
         return_documents: false,
         visibility: :sync
@@ -55,11 +57,10 @@ module Sanity
         raise ArgumentError, "params argument is missing" unless params
 
         (args.delete(:options) || {}).then do |opts|
-          QUERY_PARAMS.keys.each do |qup|
-            query_set << [qup, opts.fetch(qup, QUERY_PARAMS[qup])]
+          DEFAULT_QUERY_PARAMS.keys.each do |qup|
+            query_set << [qup, opts.fetch(qup, DEFAULT_QUERY_PARAMS[qup])]
           end
         end
-
         raise ArgumentError, "visibility argument must be one of #{ALLOWED_VISIBILITY}" unless valid_invisibility?
       end
 
@@ -76,18 +77,19 @@ module Sanity
       end
 
       def body
-        case params
-        when Array
-          Array.wrap(params.map { |pam| {"#{body_key}": pam} })
-        when Hash
-          Array.wrap({"#{body_key}": params})
-        else
-          []
-        end
+        return Array.wrap({"#{body_key}": params}) if params.is_a?(Hash)
+
+        Array.wrap(params.map { |pam| {"#{body_key}": pam} })
       end
 
       def body_key
-        self.class.name.demodulize.underscore
+        self.class.name.underscore.demodulize
+      end
+
+      def camelize_query_set
+        query_set.to_h.transform_keys do |key|
+          key.to_s.camelize_lower
+        end
       end
 
       def headers
@@ -98,9 +100,9 @@ module Sanity
       end
 
       def query_params
-        query_set.to_h.transform_keys do |key|
-          key.to_s.camelize(:lower)
-        end.to_query
+        camelize_query_set.map do |key, val|
+          "#{key}=#{val}"
+        end.join("&")
       end
 
       def uri
