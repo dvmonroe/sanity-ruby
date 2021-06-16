@@ -83,7 +83,7 @@ module Sanity
       end
 
       def body_key
-        self.class.name.underscore.demodulize
+        self.class.name.underscore.camelize(:lower)
       end
 
       def camelize_query_set
