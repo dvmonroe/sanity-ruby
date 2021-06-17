@@ -2,7 +2,7 @@
 
 module Sanity
   module Http
-    class CreateIfMissing
+    class CreateIfNotExists
       include Sanity::Http::Mutation
     end
   end

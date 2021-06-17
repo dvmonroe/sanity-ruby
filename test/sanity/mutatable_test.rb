@@ -15,13 +15,13 @@ describe Sanity::Mutatable do
 
       it { assert_respond_to klass, :create }
       it { assert_respond_to klass, :create_or_replace }
-      it { assert_respond_to klass, :create_if_missing }
+      it { assert_respond_to klass, :create_if_not_exists }
       it { assert_respond_to klass, :delete }
       it { assert_respond_to klass, :patch }
 
       it { assert_respond_to subject, :create }
       it { assert_respond_to subject, :create_or_replace }
-      it { assert_respond_to subject, :create_if_missing }
+      it { assert_respond_to subject, :create_if_not_exists }
       it { assert_respond_to subject, :delete }
     end
 
@@ -40,10 +40,10 @@ describe Sanity::Mutatable do
       it { assert_respond_to klass, :patch }
 
       it { refute_respond_to klass, :create_or_replace }
-      it { refute_respond_to klass, :create_if_missing }
+      it { refute_respond_to klass, :create_if_not_exists }
       it { refute_respond_to klass, :delete }
 
-      it { refute_respond_to subject, :create_if_missing }
+      it { refute_respond_to subject, :create_if_not_exists }
       it { refute_respond_to subject, :create_or_replace }
       it { refute_respond_to subject, :delete }
     end

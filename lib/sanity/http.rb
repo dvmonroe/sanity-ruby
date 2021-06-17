@@ -4,7 +4,7 @@ require "sanity/http/mutation"
 require "sanity/http/query"
 
 require "sanity/http/create"
-require "sanity/http/create_if_missing"
+require "sanity/http/create_if_not_exists"
 require "sanity/http/create_or_replace"
 require "sanity/http/delete"
 require "sanity/http/patch"

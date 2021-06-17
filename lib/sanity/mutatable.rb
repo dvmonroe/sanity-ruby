@@ -26,8 +26,8 @@ module Sanity
     end
 
     module ClassMethods
-      DEFAULT_KLASS_MUTATIONS = %i[create create_or_replace create_if_missing patch delete].freeze
-      DEFAULT_INSTANCE_MUTATIONS = %i[create create_or_replace create_if_missing delete].freeze
+      DEFAULT_KLASS_MUTATIONS = %i[create create_or_replace create_if_not_exists patch delete].freeze
+      DEFAULT_INSTANCE_MUTATIONS = %i[create create_or_replace create_if_not_exists delete].freeze
       ALL_MUTATIONS = DEFAULT_KLASS_MUTATIONS | DEFAULT_INSTANCE_MUTATIONS
 
       private

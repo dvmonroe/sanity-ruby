@@ -8,13 +8,13 @@ describe Sanity::Document do
 
   it { assert_respond_to klass, :create }
   it { assert_respond_to klass, :create_or_replace }
-  it { assert_respond_to klass, :create_if_missing }
+  it { assert_respond_to klass, :create_if_not_exists }
   it { assert_respond_to klass, :patch }
   it { assert_respond_to klass, :delete }
 
   it { assert_respond_to subject, :create }
   it { assert_respond_to subject, :create_or_replace }
-  it { assert_respond_to subject, :create_if_missing }
+  it { assert_respond_to subject, :create_if_not_exists }
   it { assert_respond_to subject, :delete }
 
   it { assert_respond_to subject, :_id }
