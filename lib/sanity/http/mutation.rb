@@ -64,6 +64,10 @@ module Sanity
         raise ArgumentError, "visibility argument must be one of #{ALLOWED_VISIBILITY}" unless valid_invisibility?
       end
 
+      def body_key
+        self.class.name.demodulize.underscore.camelize_lower
+      end
+
       def call
         Net::HTTP.post(uri, {"#{REQUEST_KEY}": body}.to_json, headers).then do |result|
           block_given? ? yield(result_wrapper.call(result)) : result_wrapper.call(result)
@@ -80,10 +84,6 @@ module Sanity
         return Array.wrap({"#{body_key}": params}) if params.is_a?(Hash)
 
         Array.wrap(params.map { |pam| {"#{body_key}": pam} })
-      end
-
-      def body_key
-        self.class.name.demodulize.camelize_lower
       end
 
       def camelize_query_set
