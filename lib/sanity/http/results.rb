@@ -15,6 +15,9 @@ module Sanity
         @raw_result = result
       end
 
+      # TODO: parse the JSON and return what the user asked for
+      # whether that just be the response, the document ids, or the
+      # the document object(s) the user mutated
       def call
         raw_result
       end

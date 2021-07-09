@@ -30,7 +30,7 @@ module Sanity
           val << "#{idx.positive? ? "," : ""} #{x}"
         end
 
-        "{#{val.strip}}"
+        "{ #{val.strip} }"
       end
     end
   end
