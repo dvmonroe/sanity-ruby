@@ -75,11 +75,80 @@ end
 
 ## Mutating
 
-TODO
+To create or replace a document:
+
+```ruby
+Sanity::Document.create_or_replace(params: { _id: "1234-321", _type: "user", first_name: "Carl", last_name: "Sagan"})
+```
+
+To create a document if it does not exist:
+
+```ruby
+Sanity::Document.create_if_not_exists(params: { _id: "1234-321", _type: "user", first_name: "Carl", last_name: "Sagan"})
+```
+
+To delete a document:
+
+```ruby
+Sanity::Document.delete(params: { _id: "1234-321"})
+```
+
+To patch a document:
+
+```ruby
+# TODO
+```
 
 ## Querying
 
-TODO
+To find document(s):
+
+[It can only fetch by id](https://www.sanity.io/docs/http-doc)
+
+```ruby
+Sanity::Document.find(_id: "1234-321")
+```
+
+To find documents based on certain fields:
+
+```ruby
+Sanity::Document.where(_id: "1234-321", slug: "foobar")
+```
+
+Where
+
+```ruby
+where: {
+}
+
+```
+
+Order
+
+```ruby
+
+```
+
+Limit
+
+```ruby
+limit: 5, offset: 10
+```
+
+Select
+
+```ruby
+select: [:_id, :slug, :title, :name]
+```
+
+
+Should you need more advanced querying that isn't handled in this gem you can pass a raw groq query
+
+[Query Cheat Sheet](https://www.sanity.io/docs/query-cheat-sheet)
+
+```ruby
+Sanity::Document.where(groq: "*[_type=='movie']{title,poster{asset->{path,url}}}")
+```
 
 ## Development
 

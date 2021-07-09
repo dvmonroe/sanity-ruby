@@ -1,11 +1,5 @@
 # frozen_string_literal: true
 
-require "json"
-require "net/http"
-require "uri"
-
-require "sanity/http/result_wrapper"
-
 using Sanity::Refinements::Strings
 using Sanity::Refinements::Arrays
 
@@ -30,11 +24,6 @@ module Sanity
       # See https://www.sanity.io/docs/http-mutations#visibility-937bc4250c79
       ALLOWED_VISIBILITY = %i[sync async deferred]
 
-      # Default result wrapper if not provided
-      # It must respond to the class method `.call` and expect
-      # a single argument of the Net::HTTP response
-      DEFAULT_RESULT_WRAPPER = Sanity::Http::ResultWrapper
-
       # See https://www.sanity.io/docs/http-mutations#aa493b1c2524
       REQUEST_KEY = "mutations"
 
@@ -51,7 +40,7 @@ module Sanity
         @resource_klass = args.delete(:resource_klass)
         @params = args.delete(:params)
         @query_set = Set.new
-        @result_wrapper = args.delete(:result_wrapper) || DEFAULT_RESULT_WRAPPER
+        @result_wrapper = args.delete(:result_wrapper) || Sanity::Http::Results
 
         raise ArgumentError, "resource_klass must be defined" unless resource_klass
         raise ArgumentError, "params argument is missing" unless params
@@ -106,7 +95,9 @@ module Sanity
       end
 
       def uri
-        URI("#{base_url}?#{query_params}")
+        URI(base_url).tap do |obj|
+          obj.query = query_params
+        end
       end
 
       def valid_invisibility?

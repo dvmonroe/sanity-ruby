@@ -2,7 +2,7 @@
 
 module Sanity
   module Http
-    class ResultWrapper
+    class Results
       class << self
         def call(result)
           new(result).call

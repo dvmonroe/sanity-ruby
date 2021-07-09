@@ -16,8 +16,8 @@ module Sanity
 
       private
 
-      def url
-        "#{base_url}/#{id}"
+      def uri
+        URI("#{base_url}/#{id}")
       end
     end
   end

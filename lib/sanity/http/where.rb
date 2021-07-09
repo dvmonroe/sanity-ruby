@@ -7,12 +7,14 @@ module Sanity
       delegate where_api_endpoint: :resource_klass
       alias_method :api_endpoint, :where_api_endpoint
 
-      attr_reader :groq, :use_post
+      attr_reader :groq, :use_post, :groq_attributes
 
       def initialize(**args)
         super
-        @groq = args.delete(:groq) || false
+        @groq = args.delete(:groq) || ""
         @use_post = args.delete(:use_post) || false
+
+        @groq_attributes = args.except(:groq, :use_post, :resource_klass, :result_wrapper)
       end
 
       private
@@ -21,8 +23,14 @@ module Sanity
         use_post ? :post : :get
       end
 
-      def url
-        "#{base_url}?query=#{}"
+      def uri
+        super.tap do |obj|
+          obj.query = "query=#{CGI.escape(groq_query)}"
+        end
+      end
+
+      def groq_query
+        groq.empty? ? Sanity::Groqify.call(**groq_attributes) : groq
       end
     end
   end

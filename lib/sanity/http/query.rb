@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "cgi"
+
 module Sanity
   module Http
     module Query
@@ -17,17 +19,12 @@ module Sanity
         end
       end
 
-      # Default result wrapper if not provided
-      # It must respond to the class method `.call` and expect
-      # a single argument of the Net::HTTP response
-      DEFAULT_RESULT_WRAPPER = Sanity::Http::ResultWrapper
-
       attr_reader :resource_klass, :result_wrapper
 
       # @todo Add query support
       def initialize(**args)
         @resource_klass = args.delete(:resource_klass)
-        @result_wrapper = args.delete(:result_wrapper) || DEFAULT_RESULT_WRAPPER
+        @result_wrapper = args.delete(:result_wrapper) || Sanity::Http::Results
       end
 
       # @todo Add query support
@@ -47,10 +44,6 @@ module Sanity
         "https://#{project_id}.api.sanity.io/#{api_version}/#{api_endpoint}/#{dataset}"
       end
 
-      def url
-        raise NotImplementedError, "#{__method__} must be defined"
-      end
-
       def headers
         {
           "Content-Type": "application/json",
@@ -59,7 +52,7 @@ module Sanity
       end
 
       def uri
-        URI("#{url}")
+        URI(base_url)
       end
     end
   end
