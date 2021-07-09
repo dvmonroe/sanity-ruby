@@ -11,19 +11,28 @@ module Sanity
 
       RESERVED = %i[order]
 
-      attr_reader :args
+      attr_reader :order, :val
 
       def initialize(**args)
-        @args = args
+        args.slice(*RESERVED).then do |opts|
+          @order = opts[:order]
+        end
+
+        @val = +""
       end
 
       def call
-        ""
-        # opts = args.except(*RESERVED - ORDERING_RESERVED)
+        return unless order
 
-        # if opts.include?(:order)
-        #   "| order()"
-        # end
+        raise ArgumentError, "order must be hash" unless order.is_a?(Hash)
+
+        order.to_a.each_with_index do |(key, sort), idx|
+          val << " | order(#{key} #{sort})".then do |str|
+            idx.positive? ? str : str.strip
+          end
+        end
+
+        val
       end
     end
   end

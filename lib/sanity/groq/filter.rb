@@ -36,7 +36,7 @@ module Sanity
       attr_reader :args, :filter_value
 
       def initialize(**args)
-        @args = args
+        @args = args.except(*Sanity::Groqify::RESERVED - RESERVED)
         @filter_value = +""
       end
 
@@ -48,8 +48,9 @@ module Sanity
 
       private
 
+      # TODO: Fix up
       def iterate
-        args.except(*Sanity::Groqify::RESERVED - RESERVED).each do |key, val|
+        args.each do |key, val|
           if val.is_a?(String)
             filter_value << "#{default_multi_filter} #{key} == '#{val}'".strip
           end

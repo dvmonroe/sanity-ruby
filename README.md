@@ -152,10 +152,11 @@ Order
 
 [docs](https://www.sanity.io/docs/query-cheat-sheet#b5aec96cf56c)
 
-_not yet supported_
+_partially supported_
 
 ```ruby
-# TODO
+order: { createdAt: :desc, updatedAt: :asc }
+# order(createdAt desc) | order(updatedAt asc)
 ```
 
 Limit
@@ -184,7 +185,7 @@ select: [:_id, :slug, :title, :name]
 Sanity::Document.where(_type: "user", select: %i[first_name last_name])
 ```
  
-Should you need more advanced querying that isn't handled in this gem you can pass a raw groq query
+Should you need more advanced querying that isn't handled in this gem's DSL you can pass a raw groq query
 
 [Query Cheat Sheet](https://www.sanity.io/docs/query-cheat-sheet)
 

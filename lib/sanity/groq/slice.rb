@@ -10,23 +10,31 @@ module Sanity
       end
 
       RESERVED = %i[limit offset]
+      ZERO_INDEX = 0
 
-      attr_reader :args
+      attr_reader :limit, :offset
 
       def initialize(**args)
-        @args = args
+        args.slice(*RESERVED).then do |opts|
+          @limit = opts[:limit]
+          @offset = opts[:offset]
+        end
       end
 
       def call
-        opts = args.except(*Sanity::Groqify::RESERVED - RESERVED)
+        return "" unless limit
 
-        if opts.key?(:limit)
-          if !opts.key?(:offset)
-            "[0...#{opts[:limit]}]"
-          else
-            "[#{opts[:offset]}...#{opts[:limit] + opts[:offset]}]"
-          end
-        end
+        !offset ? zero_index_to_limit : offset_to_limit
+      end
+
+      private
+
+      def offset_to_limit
+        "[#{offset}...#{limit + offset}]"
+      end
+
+      def zero_index_to_limit
+        "[#{ZERO_INDEX}...#{limit}]"
       end
     end
   end

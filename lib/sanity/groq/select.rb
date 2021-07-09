@@ -13,22 +13,24 @@ module Sanity
 
       RESERVED = %i[select]
 
-      attr_reader :args, :return_value
+      attr_reader :select, :val
 
       def initialize(**args)
-        @args = args
-        @return_value = +""
+        args.slice(*RESERVED).then do |opts|
+          @select = opts[:select]
+        end
+
+        @val = +""
       end
 
       def call
-        opts = args.except(*Sanity::Groqify::RESERVED - RESERVED)
+        return unless select
 
-        if opts.include?(:select)
-          Array.wrap(opts[:select]).each_with_index do |x, idx|
-            return_value << "#{idx.positive? ? "," : ""} #{x}"
-          end
-          "{#{return_value.strip}}"
+        Array.wrap(select).each_with_index do |x, idx|
+          val << "#{idx.positive? ? "," : ""} #{x}"
         end
+
+        "{#{val.strip}}"
       end
     end
   end

@@ -26,7 +26,7 @@ module Sanity
     end
 
     def call
-      "*[#{filter}]#{order}#{slice}#{select}"
+      "*[#{filter}] #{order} #{slice} #{select}"
     end
 
     private
