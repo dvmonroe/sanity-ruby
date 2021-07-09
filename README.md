@@ -75,7 +75,17 @@ end
 
 ## Mutating
 
+To create a document:
+
+[docs](https://www.sanity.io/docs/http-mutations#c732f27330a4)
+
+```ruby
+Sanity::Document.create(params: {_type: "user", first_name: "Carl", last_name: "Sagan"})
+```
+
 To create or replace a document:
+
+[docs](https://www.sanity.io/docs/http-mutations#95bb692d7fb0)
 
 ```ruby
 Sanity::Document.create_or_replace(params: { _id: "1234-321", _type: "user", first_name: "Carl", last_name: "Sagan"})
@@ -83,11 +93,15 @@ Sanity::Document.create_or_replace(params: { _id: "1234-321", _type: "user", fir
 
 To create a document if it does not exist:
 
+[docs](https://www.sanity.io/docs/http-mutations#bd91661cae0c)
+
 ```ruby
 Sanity::Document.create_if_not_exists(params: { _id: "1234-321", _type: "user", first_name: "Carl", last_name: "Sagan"})
 ```
 
 To delete a document:
+
+[docs](https://www.sanity.io/docs/http-mutations#40a9a879af9b)
 
 ```ruby
 Sanity::Document.delete(params: { _id: "1234-321"})
@@ -95,8 +109,10 @@ Sanity::Document.delete(params: { _id: "1234-321"})
 
 To patch a document:
 
+[docs](https://www.sanity.io/docs/http-mutations#2f480b2baca5)
+
 ```ruby
-# TODO
+Sanity::Document.patch(params: { _id: "1234-321", set: { first_name: "Carl" }})
 ```
 
 ## Querying
@@ -117,31 +133,57 @@ Sanity::Document.where(_id: "1234-321", slug: "foobar")
 
 Where
 
+[docs](https://www.sanity.io/docs/query-cheat-sheet#3949cadc7524)
+
+_majority supported_
+
 ```ruby
 where: {
 }
+```
 
+```ruby
+Sanity::Document.where(_type: "user", and: {or: {_id:  "123", first_name: "Carl" }})
+# Resulting GROQ:
+# *[_type == 'user' && (_id == '123' || first_name == 'Carl')]
 ```
 
 Order
 
-```ruby
+[docs](https://www.sanity.io/docs/query-cheat-sheet#b5aec96cf56c)
 
+_not yet supported_
+
+```ruby
+# TODO
 ```
 
 Limit
+
+[docs](https://www.sanity.io/docs/query-cheat-sheet#170b92d4caa2)
 
 ```ruby
 limit: 5, offset: 10
 ```
 
+```ruby
+Sanity::Document.where(_type: "user", limit: 5, offset: 2)
+```
+
 Select
+
+[docs](https://www.sanity.io/docs/query-cheat-sheet#55d30f6804cc)
+
+_partially supported_
 
 ```ruby
 select: [:_id, :slug, :title, :name]
 ```
 
-
+```ruby
+Sanity::Document.where(_type: "user", select: %i[first_name last_name])
+```
+ 
 Should you need more advanced querying that isn't handled in this gem you can pass a raw groq query
 
 [Query Cheat Sheet](https://www.sanity.io/docs/query-cheat-sheet)
