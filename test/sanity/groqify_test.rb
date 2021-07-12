@@ -7,8 +7,8 @@ describe Sanity::Groqify do
 
   it "defines RESERVED" do
     assert_equal \
-      %i[and or not is gt gt_eq lt lt_eq match limit offset order select],
-      subject::RESERVED
+      %i[and or not is gt gt_eq lt lt_eq match limit offset order select].sort,
+      subject::RESERVED.sort
   end
 
   describe ".call" do
@@ -22,10 +22,12 @@ describe Sanity::Groqify do
       let(:args) { {foo: :bar} }
 
       it "invokes groq objects" do
-        Sanity::Groq::Order.expects(:call).with(foo: :bar)
-        Sanity::Groq::Slice.expects(:call).with(foo: :bar)
-        Sanity::Groq::Select.expects(:call).with(foo: :bar)
-        Sanity::Groq::Filter.expects(:call).with(foo: :bar)
+        [
+          Sanity::Groq::Order,
+          Sanity::Groq::Slice,
+          Sanity::Groq::Select,
+          Sanity::Groq::Filter
+        ].each { |klass| klass.expects(:call).with(foo: :bar).returns(true) }
 
         subject.call(**args)
       end

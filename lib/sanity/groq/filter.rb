@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Hash#except! was added in Ruby 3
+use Sanity::Refinements::Hash if RUBY_VERSION < "3.0"
+
 module Sanity
   module Groq
     class Filter
@@ -9,29 +12,22 @@ module Sanity
         end
       end
 
-      OPERATORS = {
+      COMPARISON_OPERATORS = {
         is: "==",
         not: "!=",
         gt: ">",
         gt_eq: ">=",
         lt: "<",
-        lt_eq: "<="
+        lt_eq: "<=",
+        match: "match"
       }
 
-      MULTIPLE = {
+      LOGICAL_OPERATORS = {
         and: "&&",
         or: "||"
       }
 
-      TOP_LEVEL = {
-        and: "&&",
-        or: "||",
-        not: "!"
-      }
-
-      WORDS = %i[match]
-
-      RESERVED = TOP_LEVEL.keys | OPERATORS.keys | MULTIPLE.keys | WORDS
+      RESERVED = COMPARISON_OPERATORS.keys | LOGICAL_OPERATORS.keys
 
       attr_reader :args, :filter_value
 
@@ -42,66 +38,57 @@ module Sanity
 
       def call
         iterate
-
-        filter_value
+        filter_value.strip
       end
 
       private
 
-      # TODO: Fix up
+      def cast_value(val)
+        val.is_a?(Integer) ? val : "'#{val}'"
+      end
+
+      def default_multi_filter
+        filter_value.length.positive? ? " #{LOGICAL_OPERATORS[:and]}" : ""
+      end
+
+      def equal
+        COMPARISON_OPERATORS[:is]
+      end
+
       def iterate
         args.each do |key, val|
           if val.is_a?(String)
-            filter_value << "#{default_multi_filter} #{key} == '#{val}'".strip
-          end
-
-          if MULTIPLE.include?(key)
-            if MULTIPLE.include?(val.keys[0])
-              filter_value << "#{MULTIPLE[key]} ("
+            filter_value << "#{default_multi_filter} #{key} #{equal} #{cast_value(val)}"
+          elsif val.is_a?(Array)
+            filter_value << "#{key} in #{val.map(&:to_s)}"
+          elsif LOGICAL_OPERATORS.key?(key)
+            if LOGICAL_OPERATORS.key?(val.keys[0])
+              filter_value << " #{LOGICAL_OPERATORS[key]} ("
 
               val.values[0].each_with_index do |(vkey, vval), idx|
                 filter_value << if idx.positive?
-                  " #{MULTIPLE[val.keys[0]]} #{vkey} == '#{vval}'"
+                  " #{LOGICAL_OPERATORS[val.keys[0]]} #{vkey} #{equal} #{cast_value(vval)}"
                 else
-                  "#{vkey} == '#{vval}'"
+                  "#{vkey} #{equal} #{cast_value(vval)}"
                 end
               end
               filter_value << ")"
             else
               val.each do |vkey, vval|
-                filter_value << " #{multi_filter(key)} #{vkey} == '#{vval}'".strip
+                filter_value << " #{multi_filter(key)} #{vkey} #{equal} #{cast_value(vval)}"
               end
-              next
+            end
+          elsif COMPARISON_OPERATORS.key?(val.keys[0])
+            val.each do |vkey, vval|
+              filter_value << "#{default_multi_filter} #{key} #{COMPARISON_OPERATORS[vkey]} #{cast_value(vval)}"
             end
           end
         end
       end
 
       def multi_filter(key)
-        filter_value.length.positive? ? MULTIPLE[key] : ""
-      end
-
-      def default_multi_filter
-        filter_value.length.positive? ? " #{MULTIPLE[:and]}" : ""
+        filter_value.length.positive? ? LOGICAL_OPERATORS[key] : ""
       end
     end
   end
 end
-
-# {
-#   popularity: { lt: 10 }
-#   popularity: { gt: 10 }
-#   title: { in: ["foo"]}
-#   combo: [:title, :slug], match: "foo"
-#   title: { not: ["foo"]}
-#   not: {id: { in: :path }}
-#   not: awardWinner
-#   is: awardWinner
-#   and:
-#   or:
-#   offset:
-#   limit:
-#   order:
-#   defined:
-#   select: [:_id, :_type]
-# }

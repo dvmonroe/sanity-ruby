@@ -18,11 +18,10 @@ module Sanity
       Sanity::Groq::Order::RESERVED |
       Sanity::Groq::Select::RESERVED
 
-    attr_reader :args, :query
+    attr_reader :args
 
     def initialize(**args)
       @args = args
-      @query = +""
     end
 
     def call
