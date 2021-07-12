@@ -2,7 +2,7 @@
 
 module Sanity
   module Refinements
-    module Hash
+    module Hashes
       refine Hash do
         # Defined in Ruby >= 3
         def except!(*keys)

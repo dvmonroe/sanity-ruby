@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Hash#except! was added in Ruby 3
-use Sanity::Refinements::Hash if RUBY_VERSION < "3.0"
+using Sanity::Refinements::Hashes if RUBY_VERSION.to_i < 3.0
 
 module Sanity
   module Groq

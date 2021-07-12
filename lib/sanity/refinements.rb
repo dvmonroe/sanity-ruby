@@ -2,4 +2,4 @@
 
 require "sanity/refinements/strings"
 require "sanity/refinements/arrays"
-require "sanity/refinements/hash"
+require "sanity/refinements/hashes"
