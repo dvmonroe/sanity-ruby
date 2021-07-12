@@ -139,6 +139,15 @@ _majority supported_
 
 ```ruby
 where: {
+  _id: "123", # _id == '123'
+  _id: {not: "123"} # _id != '123'
+  title: {match: "wo*"} # title match 'wo*'
+  popularity: {gt: 10}, # popularity > 10
+  popularity: {gt_eq: 10}, # popularity >= 10
+  popularity: {lt: 10}, # popularity < 10
+  popularity: {lt_eq: 10}, # popularity <= 10
+  _type: "movie" or: {_type: "cast"} # _type == 'movie' || _type == 'cast'
+  _type: "movie" and: {or: {_type: "cast"}, {_type: "person"}} # _type == 'movie' && (_type == 'cast' || _type == 'person')
 }
 ```
 
