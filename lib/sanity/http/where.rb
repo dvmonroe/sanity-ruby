@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Hash#except! was added in Ruby 3
+using Sanity::Refinements::Hashes if RUBY_VERSION.to_i < 3.0
+
 module Sanity
   module Http
     class Where
