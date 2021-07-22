@@ -29,12 +29,25 @@ module Sanity
 
       # @todo Add query support
       def call
-        Net::HTTP.send(method, uri, headers).then do |result|
-          block_given? ? yield(result_wrapper.call(result)) : result_wrapper.call(result)
+        http = Net::HTTP.new(uri.host, uri.port)
+
+        http.use_ssl = uri.scheme == "https"
+
+        request = Module.const_get("Net::HTTP::#{method.to_s.classify}").new(uri, headers)
+
+        request.body = request_body
+
+        http.request(request).then do |result|
+          data = JSON.parse(result.body)
+
+          block_given? ? yield(result_wrapper.call(data)) : result_wrapper.call(data)
         end
       end
 
       private
+
+      def request_body
+      end
 
       def method
         :get
