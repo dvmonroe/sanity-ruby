@@ -28,12 +28,18 @@ module Sanity
 
       def uri
         super.tap do |obj|
-          obj.query = "query=#{CGI.escape(groq_query)}"
+          obj.query = "query=#{CGI.escape(groq_query)}" unless use_post
         end
       end
 
       def groq_query
         groq.empty? ? Sanity::Groqify.call(**groq_attributes) : groq
+      end
+
+      def request_body
+        return unless use_post
+
+        {query: groq_query}.to_json
       end
     end
   end
