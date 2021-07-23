@@ -2,6 +2,8 @@
 
 require "cgi"
 
+using Sanity::Refinements::Strings
+
 module Sanity
   module Http
     module Query
