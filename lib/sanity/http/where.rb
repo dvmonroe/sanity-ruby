@@ -10,11 +10,12 @@ module Sanity
       delegate where_api_endpoint: :resource_klass
       alias_method :api_endpoint, :where_api_endpoint
 
-      attr_reader :groq, :use_post, :groq_attributes
+      attr_reader :groq, :use_post, :groq_attributes, :variables
 
       def initialize(**args)
         super
         @groq = args.delete(:groq) || ""
+        @variables = args.delete(:variables) || {}
         @use_post = args.delete(:use_post) || false
 
         @groq_attributes = args.except(:groq, :use_post, :resource_klass, :result_wrapper)
@@ -28,8 +29,20 @@ module Sanity
 
       def uri
         super.tap do |obj|
-          obj.query = "query=#{CGI.escape(groq_query)}" unless use_post
+          obj.query = URI.encode_www_form(query_and_variables) unless use_post
         end
+      end
+
+      def query_and_variables
+        if use_post
+          {params: variables}
+        else
+          {}.tap do |hash|
+            variables.each do |key, value|
+              hash["$#{key}"] = "\"#{value}\""
+            end
+          end
+        end.merge(query: groq_query)
       end
 
       def groq_query
@@ -39,7 +52,7 @@ module Sanity
       def request_body
         return unless use_post
 
-        {query: groq_query}.to_json
+        query_and_variables.to_json
       end
     end
   end
