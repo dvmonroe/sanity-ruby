@@ -4,12 +4,20 @@ module Sanity
   module Http
     class Find
       include Sanity::Http::Query
-      delegate %i[find_api_endpoint] => :resource_klass
+      delegate find_api_endpoint: :resource_klass
+      alias_method :api_endpoint, :find_api_endpoint
+
+      attr_reader :id
+
+      def initialize(**args)
+        super
+        @id = args.delete(:id)
+      end
 
       private
 
-      def base_url
-        "https://#{project_id}.api.sanity.io/#{api_version}/#{find_api_endpoint}/#{dataset}"
+      def uri
+        URI("#{base_url}/#{id}")
       end
     end
   end

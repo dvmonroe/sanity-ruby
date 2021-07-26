@@ -6,6 +6,7 @@ require "sanity/refinements"
 require "sanity/version"
 require "sanity/configuration"
 
+require "sanity/groqify"
 require "sanity/http"
 
 require "sanity/attributable"
