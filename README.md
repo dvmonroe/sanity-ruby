@@ -10,6 +10,7 @@ The library also provides other features. For example:
   - Easy configuration for fast setup and use.
   - A pre-defined class to help make any PORO a "sanity resource"
   - Extensibility in overriding the wrapper of your API response results
+  - A small DSL around GROQ queries
 
 ## Contents
 
