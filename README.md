@@ -3,9 +3,9 @@
 ![](https://github.com/morning-brew/sanity-ruby/actions/workflows/ci.yml/badge.svg)
 <a href="https://codeclimate.com/github/morning-brew/sanity-ruby/maintainability"><img src="https://api.codeclimate.com/v1/badges/1984ee6eb0bce46a2469/maintainability" /></a>
 
-The Sanity Ruby library provides convenient access to the Sanity API from applications written in Ruby. It includes a pre-defined set of classes for API resources that initialize themselves dynamically from API responses when applicable.
+The Sanity Ruby library provides convenient access to the Sanity API from applications written in Ruby. It includes a pre-defined set of classes for API resources.
 
-The library also provides other features. For example:
+The library also provides other features, like:
 
 - Easy configuration for fast setup and use.
 - A pre-defined class to help make any PORO a "sanity resource"
@@ -120,10 +120,6 @@ Sanity::Document.find(_id: "1234-321")
 ```
 
 To find documents based on certain fields:
-
-```ruby
-Sanity::Document.where(_id: "1234-321", slug: "foobar")
-```
 
 [Where](https://www.sanity.io/docs/query-cheat-sheet#3949cadc7524)
 
