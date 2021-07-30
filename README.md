@@ -7,19 +7,21 @@ The Sanity Ruby library provides convenient access to the Sanity API from applic
 
 The library also provides other features. For example:
 
-  - Easy configuration for fast setup and use.
-  - A pre-defined class to help make any PORO a "sanity resource"
-  - Extensibility in overriding the wrapper of your API response results
-  - A small DSL around GROQ queries
+- Easy configuration for fast setup and use.
+- A pre-defined class to help make any PORO a "sanity resource"
+- Extensibility in overriding the wrapper of your API response results
+- A small DSL around GROQ queries
 
 ## Contents
 
-- [Getting Started](#getting-started)
-- [Mutating](#mutating)
-- [Querying](#querying)
-- [Development](#development)
-- [Contributing](#contributing)
-- [License](#license)
+- [Sanity](#sanity)
+  - [Contents](#contents)
+  - [Getting Started](#getting-started)
+  - [Mutating](#mutating)
+  - [Querying](#querying)
+  - [Development](#development)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Getting Started
 
@@ -178,13 +180,25 @@ select: [:_id, :slug, :title, :name]
 ```ruby
 Sanity::Document.where(_type: "user", select: %i[first_name last_name])
 ```
- 
+
 Should you need more advanced querying that isn't handled in this gem's DSL you can pass a raw groq query
 
 [Query Cheat Sheet](https://www.sanity.io/docs/query-cheat-sheet)
 
 ```ruby
-Sanity::Document.where(groq: "*[_type=='movie']{title,poster{asset->{path,url}}}")
+groq_query = <<-GROQ
+  *[ _type =='movie' && name == $name] {
+    title,
+    poster {
+      asset-> {
+        path,
+        url
+      }
+    }
+  }
+GROQ
+
+Sanity::Document.where(groq: groq_query, variables: {name: "Monsters, Inc."})
 ```
 
 ## Development
@@ -196,7 +210,6 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/morning-brew/sanity-ruby.
-
 
 ## License
 
