@@ -31,6 +31,17 @@ Add this line to your application's Gemfile:
 gem 'sanity-ruby'
 ```
 
+Setup your configuration. If using in Rails, consider setting this in an initializer:
+
+```ruby
+Sanity.configure do |s|
+  s.token = "yoursupersecrettoken"
+  s.api_version = "v2021-03-25"
+  s.project_id = "1234"
+  s.dataset = "development"
+end
+```
+
 To create a new document:
 
 ```ruby
