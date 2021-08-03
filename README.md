@@ -48,6 +48,15 @@ To create a new document:
 Sanity::Document.create(params: {_type: "user", first_name: "Carl", last_name: "Sagan"})
 ```
 
+You can also return the created document ID.
+
+```ruby
+res = Sanity::Document.create(params: {_type: "user", first_name: "Carl", last_name: "Sagan"}, options: {return_ids: true})
+
+# JSON.parse(res.body)["results"]
+# > [{"id"=>"1fc471c6434fdc654ba447", "operation"=>"create"}]
+```
+
 To create a new asset:
 
 ```ruby
