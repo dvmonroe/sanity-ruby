@@ -39,6 +39,7 @@ Sanity.configure do |s|
   s.api_version = "v2021-03-25"
   s.project_id = "1234"
   s.dataset = "development"
+  s.use_cdn = false
 end
 ```
 
