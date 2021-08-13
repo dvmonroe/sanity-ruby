@@ -24,6 +24,11 @@ module Sanity
       @token = ""
       @use_cdn = false
     end
+
+    # @return [String] Api subdomain based on use_cdn flag
+    def api_subdomain
+      use_cdn ? "apicdn" : "api"
+    end
   end
 
   def self.configuration

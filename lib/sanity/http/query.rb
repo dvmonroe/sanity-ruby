@@ -11,7 +11,7 @@ module Sanity
         def included(base)
           base.extend(ClassMethods)
           base.extend(Forwardable)
-          base.delegate(%i[project_id api_version dataset token] => :"Sanity.config")
+          base.delegate(%i[project_id api_version dataset token api_subdomain] => :"Sanity.config")
         end
       end
 
@@ -56,7 +56,7 @@ module Sanity
       end
 
       def base_url
-        "https://#{project_id}.api.sanity.io/#{api_version}/#{api_endpoint}/#{dataset}"
+        "https://#{project_id}.#{api_subdomain}.sanity.io/#{api_version}/#{api_endpoint}/#{dataset}"
       end
 
       def headers
