@@ -47,7 +47,7 @@ module Sanity
           define_singleton_method(key) { args[key] }
         end
 
-        instance_variable_set("@attributes", attrs)
+        instance_variable_set(:@attributes, attrs)
       end
     end
 

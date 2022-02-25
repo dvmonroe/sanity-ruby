@@ -49,7 +49,7 @@ module Sanity
           end
         end
 
-        define_singleton_method("mutatable_api_endpoint") { options.fetch(:api_endpoint, "") }
+        define_singleton_method(:mutatable_api_endpoint) { options.fetch(:api_endpoint, "") }
       end
     end
   end
