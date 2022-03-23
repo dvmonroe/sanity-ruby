@@ -11,7 +11,7 @@ module Sanity
 
       def initialize(**args)
         super
-        @id = args.delete(:id)
+        @id = args.delete(:_id)
       end
 
       private
