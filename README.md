@@ -137,7 +137,7 @@ Sanity::Document.patch(params: { _id: "1234-321", set: { first_name: "Carl" }})
 To [find document(s) by id](https://www.sanity.io/docs/http-doc):
 
 ```ruby
-Sanity::Document.find(_id: "1234-321")
+Sanity::Document.find(id: "1234-321")
 ```
 
 To find documents based on certain fields:
