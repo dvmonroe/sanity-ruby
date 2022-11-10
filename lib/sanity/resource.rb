@@ -8,6 +8,7 @@ module Sanity
   #   Sanity::Attributable
   #   Sanity::Mutatable
   #   Sanity::Queryable
+  #   Sanity::Serializable
   #
   # Sanity::Document and Sanity::Asset both inherit
   # from Sanity::Resource
@@ -26,5 +27,6 @@ module Sanity
     include Sanity::Attributable
     include Sanity::Mutatable
     include Sanity::Queryable
+    include Sanity::Serializable
   end
 end
