@@ -12,6 +12,7 @@ require "sanity/http"
 require "sanity/attributable"
 require "sanity/mutatable"
 require "sanity/queryable"
+require "sanity/serializable"
 
 require "sanity/resource"
 require "sanity/resources"

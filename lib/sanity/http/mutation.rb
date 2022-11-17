@@ -34,13 +34,19 @@ module Sanity
         visibility: :sync
       }.freeze
 
-      attr_reader :options, :params, :resource_klass, :query_set, :result_wrapper
+      attr_reader :options, :params, :resource_klass, :query_set, :serializer
 
       def initialize(**args)
         @resource_klass = args.delete(:resource_klass)
         @params = args.delete(:params)
         @query_set = Set.new
-        @result_wrapper = args.delete(:result_wrapper) || Sanity::Http::Results
+        if @resource_klass.respond_to?(:default_serializer)
+          klass_serializer = @resource_klass.default_serializer
+        end
+        @serializer = args.delete(:serializer) ||
+                      args.delete(:result_wrapper) || # kept for backwards compatibility
+                      klass_serializer ||
+                      Sanity::Http::Results
 
         raise ArgumentError, "resource_klass must be defined" unless resource_klass
         raise ArgumentError, "params argument is missing" unless params
@@ -59,7 +65,7 @@ module Sanity
 
       def call
         Net::HTTP.post(uri, {"#{REQUEST_KEY}": body}.to_json, headers).then do |result|
-          block_given? ? yield(result_wrapper.call(result)) : result_wrapper.call(result)
+          block_given? ? yield(serializer.call(result)) : serializer.call(result)
         end
       end
 
