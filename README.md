@@ -66,10 +66,17 @@ To create a new asset:
 
 To make any PORO a sanity resource:
 
+| Option  | Description |
+| --------| ------------|
+| default | set a default value. |
+| as | provides aliased getter and setter methods. |
+| type | converts value to one of Boolean, Float, Integer, or Time |
+
 ```ruby
 class User < Sanity::Resource
-  attribute :_id, default: ""
-  attribute :_type: default: ""
+  attribute :_id, as: :id, default: ""
+  attribute :_createdAt, as: :created_at
+  attribute :login_count, type: :integer
   mutatable only: %i(create delete)
   queryable
 end
