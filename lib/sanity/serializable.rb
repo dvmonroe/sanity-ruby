@@ -38,17 +38,13 @@ module Sanity
       end
 
       def class_serializer
-        @class_serializer ||= Proc.new do |results|
-          results['result'].map do |result|
+        @class_serializer ||= proc do |results|
+          results["result"].map do |result|
             attributes = result.slice(*self.attributes.map(&:to_s))
-            self.new(**attributes.transform_keys(&:to_sym))
+            new(**attributes.transform_keys(&:to_sym))
           end
         end
       end
-
     end
-
-    attr_reader :default_serializer
-
   end
 end

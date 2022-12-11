@@ -103,7 +103,8 @@ end
 
 ## Serialization
 
-When using a PORO, you can opt-in to automatically serialize your results.
+When using a PORO, you can opt-in to automatically serialize your results. You
+must define all attributes that should be serialized.
 
 ```ruby
 class User < Sanity::Resource

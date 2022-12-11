@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
+class CustomSerializer; end
 
 describe Sanity::Serializable do
   describe "class methods" do
@@ -24,12 +25,11 @@ describe Sanity::Serializable do
 
       it { refute_nil subject.default_serializer }
       it {
-        assert_equal subject.default_serializer, subject.send(:class_serializer)
+        assert_equal subject.send(:class_serializer), subject.default_serializer
       }
     end
 
     context "with custom serializer defined" do
-      class CustomSerializer; end
       subject {
         Class.new do
           include Sanity::Serializable
