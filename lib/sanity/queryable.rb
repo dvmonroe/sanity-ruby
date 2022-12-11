@@ -40,11 +40,11 @@ module Sanity
       def queryable(**options)
         options.fetch(:only, DEFAULT_KLASS_QUERIES).each do |query|
           define_singleton_method(query) do |**args|
-            default_args = { resource_klass: self }
-            if !self.is_a?(Sanity::Document)
-              default_type = self.to_s
+            default_args = {resource_klass: self}
+            if !is_a?(Sanity::Document)
+              default_type = to_s
               default_type[0] = default_type[0].downcase
-              default_args.merge!(_type: default_type)
+              default_args[:_type] = default_type
             end
             Module.const_get("Sanity::Http::#{query.to_s.classify}").call(
               **args.merge(default_args)

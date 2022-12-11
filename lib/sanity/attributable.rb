@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require 'time'
+
+require "time"
 
 module Sanity
   # Attributable is responsible for setting the appropriate attributes
@@ -33,16 +34,21 @@ module Sanity
         @aliased_attributes ||= {}
       end
 
+      def default_attributes
+        @default_attributes ||= {}
+      end
+
       private
 
       def attribute(name, default: nil, as: nil, type: nil)
         attributes.push(name)
+        default_attributes[name] = default if default
 
-        self.define_method("#{name}=") do |value|
+        define_method("#{name}=") do |value|
           @attributes[name] =
             case type
             when :boolean
-              value.to_s == 'true'
+              value.to_s == "true"
             when :float
               value.to_f
             when :integer
@@ -53,15 +59,14 @@ module Sanity
               value
             end
         end
-        self.define_method("#{name}") { @attributes[name] }
+        define_method(name.to_s) { @attributes[name] }
 
         if as
           aliased_attributes[as] = name
-          self.alias_method("#{as}=", "#{name}=")
-          self.alias_method(as, name)
+          alias_method("#{as}=", "#{name}=")
+          alias_method(as, name)
         end
       end
-
     end
 
     attr_reader :attributes
@@ -69,6 +74,9 @@ module Sanity
     def initialize(**kwargs)
       @attributes ||= {}
       kwargs.each { |name, value| public_send("#{name}=", value) }
+      self.class.default_attributes.each do |name, value|
+        public_send("#{name}=", value) unless public_send(name)
+      end
     end
 
     def inspect
