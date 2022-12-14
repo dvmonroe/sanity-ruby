@@ -24,17 +24,28 @@ module Sanity
 
     module ClassMethods
       def default_serializer
-        @default_serializer ||= nil
+        @default_serializer ||=
+          if auto_serialize?
+            class_serializer
+          elsif defined?(@serializer)
+            @serializer
+          end
+      end
+
+      def auto_serialize?
+        return @auto_serialize if defined?(@auto_serialize)
+
+        superclass.respond_to?(:auto_serialize?) && superclass.auto_serialize?
       end
 
       private
 
       def auto_serialize
-        @default_serializer = class_serializer
+        @auto_serialize = true
       end
 
       def serializer(serializer)
-        @default_serializer = serializer
+        @serializer = serializer
       end
 
       def class_serializer
