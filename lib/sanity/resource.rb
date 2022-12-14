@@ -5,7 +5,6 @@ module Sanity
   # the sanity resources defined within this gem.
   #
   # Out of the box it includes the following mixins:
-  #   Sanity::Attributable
   #   Sanity::Mutatable
   #   Sanity::Queryable
   #   Sanity::Serializable
@@ -24,7 +23,9 @@ module Sanity
   #   end
   #
   class Resource
-    include Sanity::Attributable
+    include ActiveModel::Model
+    include ActiveModel::Attributes
+
     include Sanity::Mutatable
     include Sanity::Queryable
     include Sanity::Serializable

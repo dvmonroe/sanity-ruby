@@ -12,10 +12,7 @@ describe Sanity::Resource do
   subject { klass.new }
 
   it { assert_respond_to klass, :attributes }
-  it { assert_respond_to klass, :default_attributes }
   it { assert_respond_to klass, :default_serializer }
-
-  it { assert_respond_to subject, :attributes }
 
   describe "auto serialization" do
     subject {
