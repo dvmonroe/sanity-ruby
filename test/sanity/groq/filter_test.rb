@@ -35,6 +35,5 @@ describe Sanity::Groq::Filter do
       it { assert_equal "title in [\"Aliens\", \"Interstellar\"]", subject.call(title: %i[Aliens Interstellar]) }
       it { assert_equal "text match 'wo*'", subject.call(text: {match: "wo*"}) }
     end
-
   end
 end
