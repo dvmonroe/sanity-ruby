@@ -8,6 +8,7 @@ describe Sanity::Groq::Filter do
   describe ".call" do
     it { assert_equal "_id == '123'", subject.call(_id: "123") }
     it { assert_equal "_id == '123' && _type == 'movie'", subject.call(_id: "123", _type: "movie") }
+    it { assert_equal "active == true", subject.call(active: true) }
 
     context "logical operators" do
       it { assert_equal "_id == '123' && (_type == 'movie' || url == 'www.bar.com')", subject.call(_id: "123", and: {or: {_type: "movie", url: "www.bar.com"}}) }
