@@ -24,7 +24,7 @@ module Sanity
       def call
         return "" unless limit
 
-        !offset ? zero_index_to_limit : offset_to_limit
+        (!offset) ? zero_index_to_limit : offset_to_limit
       end
 
       private

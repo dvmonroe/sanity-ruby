@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  '2.6':
+    build:
+      context: .
+      dockerfile: Dockerfile-2.6
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./bin:/var/www/sanity-ruby/bin/
+      - ./lib:/var/www/sanity-ruby/lib/
+      - ./test:/var/www/sanity-ruby/test/
+    container_name: sanity-ruby-2.6
+    command: bash
+
+  '2.7':
+    build:
+      context: .
+      dockerfile: Dockerfile-2.7
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./bin:/var/www/sanity-ruby/bin/
+      - ./lib:/var/www/sanity-ruby/lib/
+      - ./test:/var/www/sanity-ruby/test/
+    container_name: sanity-ruby-2.7
+    command: bash
+
+  '3.0':
+    build:
+      context: .
+      dockerfile: Dockerfile-3.0
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./bin:/var/www/sanity-ruby/bin/
+      - ./lib:/var/www/sanity-ruby/lib/
+      - ./test:/var/www/sanity-ruby/test/
+    container_name: sanity-ruby-3.0
+    command: bash
+
+volumes:
+  bin-2.6:
+  lib-2.6:
+  test-2.6:
+  bin-2.7:
+  lib-2.7:
+  test-2.7:
+  bin-3.0:
+  lib-3.0:
+  test-3.0:
