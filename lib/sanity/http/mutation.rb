@@ -40,7 +40,7 @@ module Sanity
       def initialize(**args)
         @resource_klass = args.delete(:resource_klass)
         @params = args.delete(:params)
-        @query_set = ::Set.new
+        @query_set = Set.new
         @result_wrapper = args.delete(:result_wrapper) || Sanity::Http::Results
 
         raise ArgumentError, "resource_klass must be defined" unless resource_klass
