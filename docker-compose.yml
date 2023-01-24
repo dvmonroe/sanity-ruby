@@ -41,12 +41,6 @@ services:
     command: bash
 
 volumes:
-  bin-2.6:
-  lib-2.6:
-  test-2.6:
-  bin-2.7:
-  lib-2.7:
-  test-2.7:
-  bin-3.0:
-  lib-3.0:
-  test-3.0:
+  bin:
+  lib:
+  test:

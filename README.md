@@ -130,6 +130,34 @@ at query time will take priority over any other configuration.
 User.where(active: true, serializer: UserSerializer)
 ```
 
+where `UserSerializer` might look like:
+
+```ruby
+class UserSerializer
+  class << self
+    def call(...)
+      new(...).call
+    end
+  end
+
+  attr_reader :results
+
+  def initialize(args)
+    @results = args["result"]
+  end
+
+  def call
+    results.map do |result|
+      User.new(
+        _id: result["_id"],
+        _type: result["_type"]
+      )
+    end
+  end
+end
+```
+
+
 ## Mutating
 
 To [create a document](https://www.sanity.io/docs/http-mutations#c732f27330a4):
@@ -248,40 +276,23 @@ GROQ
 Sanity::Document.where(groq: groq_query, variables: {name: "Monsters, Inc."})
 ```
 
-## Custom serializer
-
-```ruby
-class UserSerializer
-  class << self
-    def call(...)
-      new(...).call
-    end
-  end
-
-  attr_reader :results
-
-  def initialize(args)
-    @results = args["result"]
-  end
-
-  def call
-    results.map do |result|
-      User.new(
-        _id: result["_id"],
-        _type: result["_type"]
-      )
-    end
-  end
-end
-```
-
-
 
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`.
+
+### Testing across all supported versions:
+
+To run tests across all gem supported ruby versions (requires Docker):
+```sh
+bin/dev-test
+```
+To run lint across all gem supported ruby versions (requires Docker):
+```sh
+bin/dev-lint
+```
 
 ## Contributing
 
