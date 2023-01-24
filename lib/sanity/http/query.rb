@@ -21,12 +21,17 @@ module Sanity
         end
       end
 
-      attr_reader :resource_klass, :result_wrapper
+      attr_reader :resource_klass, :serializer
 
       # @todo Add query support
       def initialize(**args)
         @resource_klass = args.delete(:resource_klass)
-        @result_wrapper = args.delete(:result_wrapper) || Sanity::Http::Results
+
+        warn RESULT_WRAPPER_DEPRECATION_WARNING if args[:result_wrapper]
+        @serializer = args.delete(:serializer) ||
+          args.delete(:result_wrapper) || # kept for backwards compatibility
+          klass_serializer ||
+          Sanity::Http::Results
       end
 
       # @todo Add query support
@@ -42,8 +47,13 @@ module Sanity
         http.request(request).then do |result|
           data = JSON.parse(result.body)
 
-          block_given? ? yield(result_wrapper.call(data)) : result_wrapper.call(data)
+          block_given? ? yield(serializer.call(data)) : serializer.call(data)
         end
+      end
+
+      def result_wrapper
+        warn RESULT_WRAPPER_DEPRECATION_WARNING
+        serializer
       end
 
       private
@@ -64,6 +74,12 @@ module Sanity
           "Content-Type": "application/json",
           Authorization: "Bearer #{token}"
         }
+      end
+
+      def klass_serializer
+        return unless @resource_klass.respond_to?(:default_serializer)
+
+        @resource_klass.default_serializer
       end
 
       def uri
