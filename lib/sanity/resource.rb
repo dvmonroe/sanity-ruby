@@ -7,6 +7,7 @@ module Sanity
   # Out of the box it includes the following mixins:
   #   Sanity::Mutatable
   #   Sanity::Queryable
+  #   Sanity::Serializable
   #
   # Sanity::Document and Sanity::Asset both inherit
   # from Sanity::Resource
@@ -27,5 +28,6 @@ module Sanity
 
     include Sanity::Mutatable
     include Sanity::Queryable
+    include Sanity::Serializable
   end
 end

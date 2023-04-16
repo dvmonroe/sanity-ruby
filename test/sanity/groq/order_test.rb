@@ -22,7 +22,7 @@ describe Sanity::Groq::Order do
 
       context "when order is a hash with multiple k/v pairs" do
         it "returns expected string" do
-          assert_equal\
+          assert_equal \
             "| order(createdAt desc) | order(updatedAt asc)",
             subject.call(order: {createdAt: :desc, updatedAt: :asc})
         end

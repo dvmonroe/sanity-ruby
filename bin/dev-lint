@@ -1,0 +1,3 @@
+#!/usr/bin/env ruby
+
+system "docker-compose run --rm 2.6 bin/standardrb && docker-compose run --rm 2.7 bin/standardrb && docker-compose run --rm 3.0 bin/standardrb"

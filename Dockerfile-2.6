@@ -1,0 +1,30 @@
+FROM ruby:2.6-alpine as base
+
+RUN apk add --update --no-cache \
+  build-base \
+  cmake \
+  tzdata \
+  bash \
+  git
+
+ENV APP_PATH /var/www/sanity-ruby
+RUN mkdir -p $APP_PATH
+
+# Build intermediate
+FROM base as intermediate
+
+WORKDIR $APP_PATH
+
+RUN rm -rf /var/cache/apk/*
+
+FROM base as development
+
+COPY --from=intermediate $APP_PATH $APP_PATH
+
+WORKDIR $APP_PATH
+
+ENV GEM_HOME $APP_PATH/vendor/bundle
+ENV BUNDLE_PATH vendor/bundle
+
+COPY . ./
+RUN bundle check || bundle install

@@ -68,6 +68,8 @@ module Sanity
             filter_value << "#{filter(key: nested_key)} #{key} #{equal} #{cast_value(val)}"
           elsif val.is_a?(Array) && !val[0].is_a?(Hash)
             filter_value << "#{key} in #{val.map(&:to_s)}"
+          elsif [true, false].include?(val)
+            filter_value << "#{filter(key: nested_key)} #{key} #{equal} #{val}"
           elsif LOGICAL_OPERATORS.key?(key)
             if val.is_a?(Array)
               val.each { |hsh| iterate(hsh, nested_key: key) }

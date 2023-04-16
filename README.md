@@ -9,7 +9,7 @@ The library also provides other features, like:
 
 - Easy configuration for fast setup and use.
 - A pre-defined class to help make any PORO a "sanity resource"
-- Extensibility in overriding the wrapper of your API response results
+- Extensibility in overriding the serializer for the API response results
 - A small DSL around GROQ queries
 
 ## Contents
@@ -17,6 +17,7 @@ The library also provides other features, like:
 - [Sanity](#sanity)
   - [Contents](#contents)
   - [Getting Started](#getting-started)
+  - [Serialization](#serialization)
   - [Mutating](#mutating)
   - [Querying](#querying)
   - [Development](#development)
@@ -113,6 +114,63 @@ class User
   mutatable
 end
 ```
+
+## Serialization
+
+When using a PORO, you can opt-in to automatically serialize your results. You
+must define all attributes that should be serialized.
+
+```ruby
+class User < Sanity::Resource
+  auto_serialize
+  ...
+end
+```
+
+Additionally, you can configure a custom serializer. See how to define a custom
+serializer [below](#custom-serializer).
+
+```ruby
+class User < Sanity::Resource
+  serializer UserSerializer
+  ...
+end
+```
+
+Finally, at query time you can also pass in a serializer. A serializer specified
+at query time will take priority over any other configuration.
+
+```ruby
+User.where(active: true, serializer: UserSerializer)
+```
+
+where `UserSerializer` might look like:
+
+```ruby
+class UserSerializer
+  class << self
+    def call(...)
+      new(...).call
+    end
+  end
+
+  attr_reader :results
+
+  def initialize(args)
+    @results = args["result"]
+  end
+
+  def call
+    results.map do |result|
+      User.new(
+        _id: result["_id"],
+        _type: result["_type"]
+      )
+    end
+  end
+end
+```
+
 
 ## Mutating
 
@@ -232,11 +290,23 @@ GROQ
 Sanity::Document.where(groq: groq_query, variables: {name: "Monsters, Inc."})
 ```
 
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`.
+
+### Testing across all supported versions:
+
+To run tests across all gem supported ruby versions (requires Docker):
+```sh
+bin/dev-test
+```
+To run lint across all gem supported ruby versions (requires Docker):
+```sh
+bin/dev-lint
+```
 
 ## Contributing
 

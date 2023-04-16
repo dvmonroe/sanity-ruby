@@ -18,7 +18,9 @@ module Sanity
         @variables = args.delete(:variables) || {}
         @use_post = args.delete(:use_post) || false
 
-        @groq_attributes = args.except(:groq, :use_post, :resource_klass, :result_wrapper)
+        @groq_attributes = args.except(
+          :groq, :use_post, :resource_klass, :serializer, :result_wrapper
+        )
       end
 
       private
