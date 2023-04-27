@@ -5,6 +5,9 @@ class CustomSerializer; end
 
 class BaseClass < Sanity::Resource
   auto_serialize
+
+  attribute :firstName
+  attribute :lastName
 end
 
 class InheritedClass < BaseClass; end
@@ -22,16 +25,20 @@ describe Sanity::Serializable do
     end
 
     context "with auto_serialize defined" do
-      subject {
-        Class.new do
-          include Sanity::Serializable
-          auto_serialize
-        end
-      }
+      subject { BaseClass }
 
       it { refute_nil subject.default_serializer }
       it { assert subject.auto_serialize? }
       it { assert_equal subject.send(:class_serializer), subject.default_serializer }
+      it {
+        result_array = [
+          { 'firstName' => 'John', 'lastName' => 'Doe' },
+          { 'firstName' => 'Jane', 'lastName' => 'Smith' }
+        ]
+        results = subject.send(:class_serializer).call('result' => result_array)
+        assert_equal(result_array[0], results[0].attributes)
+        assert_equal(result_array[1], results[1].attributes)
+      }
     end
 
     context "with auto_serialize defined on parent of inheritted class" do
