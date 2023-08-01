@@ -47,7 +47,7 @@ module Sanity
               default_args[:_type] = default_type
             end
             Module.const_get("Sanity::Http::#{query.to_s.classify}").call(
-              **args.merge(default_args)
+              **default_args.merge(args)
             )
           end
           define_singleton_method("#{query}_api_endpoint") { QUERY_ENDPOINTS[query] }
