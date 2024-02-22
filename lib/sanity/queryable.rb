@@ -44,7 +44,8 @@ module Sanity
 
       def define_query_method(query)
         define_singleton_method(query) do |**args|
-          default_args = {resource_klass: self, _type: Sanity::TypeHelper.default_type(self)}
+          default_type = args.key?(:_type) ? args[:_type] : Sanity::TypeHelper.default_type(self)
+          default_args = {resource_klass: self, _type: default_type}.compact
           Module.const_get("Sanity::Http::#{query.to_s.classify}").call(**default_args.merge(args))
         end
         define_singleton_method(:"#{query}_api_endpoint") { QUERY_ENDPOINTS[query] }
