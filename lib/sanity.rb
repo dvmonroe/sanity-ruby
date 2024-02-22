@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "active_model"
 require "forwardable"
 require "sanity/refinements"
 
@@ -9,7 +10,6 @@ require "sanity/configuration"
 require "sanity/groqify"
 require "sanity/http"
 
-require "sanity/attributable"
 require "sanity/mutatable"
 require "sanity/queryable"
 require "sanity/serializable"

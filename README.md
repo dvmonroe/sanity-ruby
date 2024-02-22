@@ -76,6 +76,20 @@ class User < Sanity::Resource
 end
 ```
 
+Since `Sanity::Resource` includes `ActiveModel::Model` and
+`ActiveModel::Attributes`, you're able to define types on attributes and use
+methods like `alias_attribute`.
+
+```ruby
+class User < Sanity::Resource
+  ...
+  attribute :name, :string, default: 'John Doe'
+  attribute :_createdAt, :datetime
+  alias_attribute :created_at, :_createdAt
+  ...
+end
+```
+
 To create a new document in Sanity:
 
 ```ruby
