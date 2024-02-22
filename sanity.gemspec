@@ -5,8 +5,8 @@ require_relative "lib/sanity/version"
 Gem::Specification.new do |spec|
   spec.name = "sanity-ruby"
   spec.version = Sanity::VERSION
-  spec.authors = "Morning Brew"
-  spec.email = "tech@morningbrew.com"
+  spec.authors = "Drew Monroe"
+  spec.email = "drew@pinecreeklabs.com"
 
   spec.summary = "Ruby bindings for the Sanity API"
   spec.description = ""
