@@ -26,7 +26,8 @@ describe Sanity::Serializable do
 
     context "with auto_serialize defined" do
       subject { BaseClass }
-      let(:result_array) {[
+      let(:result_array) {
+        [
           {"firstName" => "John", "lastName" => "Doe"},
           {"firstName" => "Jane", "lastName" => "Smith"}
         ]
