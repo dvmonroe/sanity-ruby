@@ -32,10 +32,10 @@ describe Sanity::Serializable do
       it { assert_equal subject.send(:class_serializer), subject.default_serializer }
       it {
         result_array = [
-          { 'firstName' => 'John', 'lastName' => 'Doe' },
-          { 'firstName' => 'Jane', 'lastName' => 'Smith' }
+          {"firstName" => "John", "lastName" => "Doe"},
+          {"firstName" => "Jane", "lastName" => "Smith"}
         ]
-        results = subject.send(:class_serializer).call('result' => result_array)
+        results = subject.send(:class_serializer).call("result" => result_array)
         assert_equal(result_array[0], results[0].attributes)
         assert_equal(result_array[1], results[1].attributes)
       }
