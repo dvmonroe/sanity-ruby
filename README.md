@@ -310,7 +310,7 @@ bin/dev-lint
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/morning-brew/sanity-ruby.
+Bug reports and pull requests are welcome on GitHub at https://github.com/dvmonroe/sanity-ruby.
 
 ## License
 

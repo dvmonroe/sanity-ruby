@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary = "Ruby bindings for the Sanity API"
   spec.description = ""
-  spec.homepage = "https://github.com/morning-brew/sanity-ruby"
+  spec.homepage = "https://github.com/dvmonroe/sanity-ruby"
   spec.license = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.6.0")
 
