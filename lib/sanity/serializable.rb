@@ -50,7 +50,8 @@ module Sanity
 
       def class_serializer
         @class_serializer ||= proc do |results|
-          results["result"].map do |result|
+          key = results.key?("result") ? "result" : "documents"
+          results[key].map do |result|
             attributes = result.slice(*self.attributes.map(&:to_s))
             new(**attributes.transform_keys(&:to_sym))
           end

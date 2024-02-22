@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "set"
+require "set" # rubocop:disable Lint/RedundantRequireStatement
 using Sanity::Refinements::Strings
 using Sanity::Refinements::Arrays
 

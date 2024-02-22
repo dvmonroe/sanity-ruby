@@ -39,7 +39,7 @@ module Sanity
     def initialize(**args)
       self.class.default_attributes.merge(args).then do |attrs|
         attrs.each do |key, val|
-          define_singleton_method("#{key}=") do |val|
+          define_singleton_method(:"#{key}=") do |val|
             args[key] = val
             attributes[key] = val
           end
