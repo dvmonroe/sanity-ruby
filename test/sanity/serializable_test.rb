@@ -26,19 +26,27 @@ describe Sanity::Serializable do
 
     context "with auto_serialize defined" do
       subject { BaseClass }
+      let(:result_array) {[
+          {"firstName" => "John", "lastName" => "Doe"},
+          {"firstName" => "Jane", "lastName" => "Smith"}
+        ]
+      }
 
       it { refute_nil subject.default_serializer }
       it { assert subject.auto_serialize? }
       it { assert_equal subject.send(:class_serializer), subject.default_serializer }
-      it {
-        result_array = [
-          {"firstName" => "John", "lastName" => "Doe"},
-          {"firstName" => "Jane", "lastName" => "Smith"}
-        ]
+
+      it "correctly serializes data with 'result' key" do
         results = subject.send(:class_serializer).call("result" => result_array)
         assert_equal(result_array[0], results[0].attributes)
         assert_equal(result_array[1], results[1].attributes)
-      }
+      end
+
+      it "correctly serializes data with 'documents' key" do
+        results = subject.send(:class_serializer).call("documents" => result_array)
+        assert_equal(result_array[0], results[0].attributes)
+        assert_equal(result_array[1], results[1].attributes)
+      end
     end
 
     context "with auto_serialize defined on parent of inheritted class" do
