@@ -1,7 +1,7 @@
 # Sanity
 
-![](https://github.com/morning-brew/sanity-ruby/actions/workflows/ci.yml/badge.svg)
-<a href="https://codeclimate.com/github/morning-brew/sanity-ruby/maintainability"><img src="https://api.codeclimate.com/v1/badges/1984ee6eb0bce46a2469/maintainability" /></a>
+![](https://github.com/dvmonroe/sanity-ruby/actions/workflows/ci.yml/badge.svg)
+[![Maintainability](https://api.codeclimate.com/v1/badges/24b96780b59c8a871e6e/maintainability)](https://codeclimate.com/github/dvmonroe/sanity-ruby/maintainability)
 
 The Sanity Ruby library provides convenient access to the Sanity API from applications written in Ruby. It includes a pre-defined set of classes for API resources.
 
