@@ -36,22 +36,18 @@ module Sanity
 
       private
 
-      # @private
       def queryable(**options)
         options.fetch(:only, DEFAULT_KLASS_QUERIES).each do |query|
-          define_singleton_method(query) do |**args|
-            default_args = {resource_klass: self}
-            if !is_a?(Sanity::Document)
-              default_type = to_s
-              default_type[0] = default_type[0].downcase
-              default_args[:_type] = default_type
-            end
-            Module.const_get("Sanity::Http::#{query.to_s.classify}").call(
-              **default_args.merge(args)
-            )
-          end
-          define_singleton_method(:"#{query}_api_endpoint") { QUERY_ENDPOINTS[query] }
+          define_query_method(query)
         end
+      end
+
+      def define_query_method(query)
+        define_singleton_method(query) do |**args|
+          default_args = {resource_klass: self, _type: Sanity::TypeHelper.default_type(self)}
+          Module.const_get("Sanity::Http::#{query.to_s.classify}").call(**default_args.merge(args))
+        end
+        define_singleton_method(:"#{query}_api_endpoint") { QUERY_ENDPOINTS[query] }
       end
     end
   end

@@ -9,6 +9,7 @@ require "sanity/configuration"
 
 require "sanity/groqify"
 require "sanity/http"
+require "sanity/helpers"
 
 require "sanity/mutatable"
 require "sanity/queryable"
