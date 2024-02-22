@@ -3,7 +3,12 @@
 require "test_helper"
 
 describe Sanity::Resource do
-  let(:klass) { Class.new(Sanity::Resource) { attribute :id; attribute :name } }
+  let(:klass) {
+    Class.new(Sanity::Resource) {
+      attribute :id
+      attribute :name
+    }
+  }
   subject { klass.new }
 
   it { assert_respond_to klass, :attributes }
@@ -21,8 +26,8 @@ describe Sanity::Resource do
       end
     }
 
-    let(:result_data) { { "result" => [{ "id" => 1, "name" => "Test Result" }] } }
-    let(:documents_data) { { "documents" => [{ "id" => 2, "name" => "Test Document" }] } }
+    let(:result_data) { {"result" => [{"id" => 1, "name" => "Test Result"}]} }
+    let(:documents_data) { {"documents" => [{"id" => 2, "name" => "Test Document"}]} }
 
     it "correctly serializes data with 'result' key" do
       serialized_objects = subject.default_serializer.call(result_data)
