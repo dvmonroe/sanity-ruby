@@ -32,7 +32,7 @@ module Sanity
   end
 
   def self.configuration
-    @configuration ||= Configuration.new
+    Thread.current[:sanity_configuration] ||= Configuration.new
   end
 
   class << self
@@ -40,7 +40,7 @@ module Sanity
   end
 
   def self.configuration=(config)
-    @configuration = config
+    Thread.current[:sanity_configuration] = config
   end
 
   def self.configure
