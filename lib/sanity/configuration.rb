@@ -18,11 +18,11 @@ module Sanity
     attr_accessor :use_cdn
 
     def initialize
-      @project_id = ""
-      @dataset = ""
-      @api_version = ""
-      @token = ""
-      @use_cdn = false
+      @project_id = ENV.fetch("SANITY_PROJECT_ID", "")
+      @dataset = ENV.fetch("SANITY_DATASET", "")
+      @api_version = ENV.fetch("SANITY_API_VERSION", "")
+      @token = ENV.fetch("SANITY_TOKEN", "")
+      @use_cdn = ENV.fetch("SANITY_USE_CDN", false) == "true"
     end
 
     # @return [String] Api subdomain based on use_cdn flag
@@ -32,7 +32,7 @@ module Sanity
   end
 
   def self.configuration
-    @configuration ||= Configuration.new
+    Thread.current[:sanity_configuration] ||= Configuration.new
   end
 
   class << self
@@ -40,7 +40,7 @@ module Sanity
   end
 
   def self.configuration=(config)
-    @configuration = config
+    Thread.current[:sanity_configuration] = config
   end
 
   def self.configure
