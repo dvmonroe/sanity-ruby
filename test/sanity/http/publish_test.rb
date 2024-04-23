@@ -4,7 +4,7 @@ require "test_helper"
 
 describe Sanity::Http::Publish do
   let(:klass) { Sanity::Http::Publish }
-  subject { klass.new(params: {}, resource_klass: "") }
+  subject { klass.new("1234-321") }
 
   it { assert_equal "documentId", subject.body_key }
 end

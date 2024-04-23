@@ -26,7 +26,7 @@ module Sanity
     end
 
     module ClassMethods
-      COMMON_MUTATIONS = %i[create create_or_replace create_if_not_exists delete publish unpublish].freeze
+      COMMON_MUTATIONS = %i[create create_or_replace create_if_not_exists delete].freeze
       DEFAULT_KLASS_MUTATIONS = (COMMON_MUTATIONS + [:patch]).freeze
       DEFAULT_INSTANCE_MUTATIONS = COMMON_MUTATIONS
       ALL_MUTATIONS = DEFAULT_KLASS_MUTATIONS | DEFAULT_INSTANCE_MUTATIONS
