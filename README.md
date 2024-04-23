@@ -44,6 +44,18 @@ Sanity.configure do |s|
 end
 ```
 
+or you can set the following ENV variables at runtime:
+
+```bash
+SANITY_TOKEN="yoursupersecrettoken"
+SANITY_API_VERSION="v2021-03-25"
+SANITY_PROJECT_ID="1234"
+SANITY_DATASET="development"
+SANITY_USE_CDN="false"
+```
+
+The configuration object is thread safe meaning you can connect to multiple different projects across multiple threads. This may be useful if your application is interacting with multiple different Sanity projects.
+
 To create a new document:
 
 ```ruby
