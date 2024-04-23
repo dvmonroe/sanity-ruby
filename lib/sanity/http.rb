@@ -12,6 +12,8 @@ require "sanity/http/create_if_not_exists"
 require "sanity/http/create_or_replace"
 require "sanity/http/delete"
 require "sanity/http/patch"
+require "sanity/http/publish"
+require "sanity/http/unpublish"
 
 require "sanity/http/find"
 require "sanity/http/where"

@@ -204,6 +204,18 @@ To [patch a document](https://www.sanity.io/docs/http-mutations#2f480b2baca5):
 Sanity::Document.patch(params: { _id: "1234-321", set: { first_name: "Carl" }})
 ```
 
+To [publish a document](https://www.sanity.io/docs/scheduling-api#dcb47be520d0):
+
+```ruby
+Sanity::Document.publish(params: ["1234-321", "1432432-545"])
+```
+
+To [unpublish a document](https://www.sanity.io/docs/scheduling-api#64f3de350651):
+
+```ruby
+Sanity::Document.unpublish(params: ["1234-321", "1432432-545"])
+```
+
 ## Querying
 
 To [find document(s) by id](https://www.sanity.io/docs/http-doc):
