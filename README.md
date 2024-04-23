@@ -70,7 +70,7 @@ To make any PORO a sanity resource:
 ```ruby
 class User < Sanity::Resource
   attribute :_id, default: ""
-  attribute :_type: default: ""
+  attribute :_type, default: ""
   mutatable only: %i(create delete)
   queryable
 end

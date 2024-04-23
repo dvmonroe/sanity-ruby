@@ -74,11 +74,13 @@ module Sanity
         serializer
       end
 
-      private
+      protected
 
       def base_url
         "https://#{project_id}.#{api_subdomain}.sanity.io/#{api_version}/#{mutatable_api_endpoint}/#{dataset}"
       end
+
+      private
 
       def body
         return Array.wrap({"#{body_key}": params}) if params.is_a?(Hash)
