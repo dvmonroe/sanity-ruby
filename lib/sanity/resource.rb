@@ -28,6 +28,8 @@ module Sanity
 
     include Sanity::Mutatable
     include Sanity::Queryable
+    include Sanity::Publishable
+
     include Sanity::Serializable
   end
 end

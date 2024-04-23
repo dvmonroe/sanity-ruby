@@ -14,6 +14,7 @@ require "sanity/helpers"
 require "sanity/mutatable"
 require "sanity/queryable"
 require "sanity/serializable"
+require "sanity/publishable"
 
 require "sanity/resource"
 require "sanity/resources"
