@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   '2.6':
     build:
@@ -39,6 +37,19 @@ services:
       - ./test:/var/www/sanity-ruby/test/
     container_name: sanity-ruby-3.0
     command: bash
+
+  '3.3':
+    build:
+      context: .
+      dockerfile: Dockerfile-3.3
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./bin:/var/www/sanity-ruby/bin/
+      - ./lib:/var/www/sanity-ruby/lib/
+      - ./test:/var/www/sanity-ruby/test/
+    container_name: sanity-ruby-3.3
+    command: bash  
 
 volumes:
   bin:
