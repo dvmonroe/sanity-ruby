@@ -65,7 +65,7 @@ Your initializer `config/initializers/sanity.rb` should look like:
 # `use_global_config` is NOT thread safe. DO NOT use if you intend on changing the
 # config object at anytime within your application's lifecycle.
 #
-# Do not use set `use_global_config` in your application if you're:
+# Do not use `use_global_config` in your application if you're:
 # - Interacting with various Sanity project ids/token
 # - Interacting with multiple API versions
 # - Interacting with calls that sometimes require the use of the CDN and sometimes don't
