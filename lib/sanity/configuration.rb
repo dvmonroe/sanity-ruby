@@ -29,21 +29,36 @@ module Sanity
     def api_subdomain
       use_cdn ? "apicdn" : "api"
     end
-  end
 
-  def self.configuration
-    Thread.current[:sanity_configuration] ||= Configuration.new
+    def to_h
+      instance_variables.each_with_object({}) do |var, obj|
+        obj[var.to_s.delete("@").to_sym] = instance_variable_get(var)
+      end
+    end
   end
 
   class << self
+    attr_accessor :use_global_config
+
+    def configuration
+      if use_global_config
+        @configuration ||= Configuration.new
+      else
+        Thread.current[:sanity_configuration] ||= Configuration.new
+      end
+    end
     alias_method :config, :configuration
-  end
 
-  def self.configuration=(config)
-    Thread.current[:sanity_configuration] = config
-  end
+    def configuration=(config)
+      if use_global_config
+        @configuration = config
+      else
+        Thread.current[:sanity_configuration] = config
+      end
+    end
 
-  def self.configure
-    yield configuration
+    def configure
+      yield configuration
+    end
   end
 end
