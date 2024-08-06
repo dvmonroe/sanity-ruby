@@ -43,9 +43,19 @@ Sanity.configure do |s|
   s.dataset = "development"
   s.use_cdn = false
 end
+
+# OR
+
+# Sanity.configure do |s|
+#   s.token = ENV.fetch("SANITY_TOKEN", "")
+#   s.api_version = ENV.fetch("SANITY_API_VERSION", "")
+#   s.project_id = ENV.fetch("SANITY_PROJECT_ID", "")
+#   s.dataset = ENV.fetch("SANITY_DATASET", "")
+#   s.use_cdn = ENV.fetch("SANITY_USE_CDN", false)
+# end
 ```
 
-or you can set the following ENV variables at runtime:
+or you can set the following ENV variables at runtime without any initializer:
 
 ```bash
 SANITY_TOKEN="yoursupersecrettoken"
@@ -55,9 +65,9 @@ SANITY_DATASET="development"
 SANITY_USE_CDN="false"
 ```
 
-The configuration object is thread safe meaning you can connect to multiple different projects and/or API variations across any number of threads. A real world scenario when working with Sanity may require that you sometimes interact with the [CDN based API](https://www.sanity.io/docs/api-cdn) and sometimes the non-CDN based API. Using ENV variables combined with our thread safe configuration object gives you the ultimate flexibility.
+The configuration object is thread safe by default meaning you can connect to multiple different projects and/or API variations across any number of threads. A real world scenario when working with Sanity may require that you sometimes interact with the [CDN based API](https://www.sanity.io/docs/api-cdn) and sometimes the non-CDN based API. Using ENV variables combined with the thread safe configuration object gives you the ultimate flexibility.
 
-If you're using this gem in a Rails application AND you're interacting with only ONE set of configuration you can make the gem use the global configuration by setting the `use_global_config` option to `true`. 
+If you're using this gem in a Rails application AND you're interacting with only ONE set of configuration you can make the gem use the global configuration by setting the `use_global_config` option to `true`.
 
 Your initializer `config/initializers/sanity.rb` should look like:
 
