@@ -12,6 +12,12 @@ The library also provides other features, like:
 - Extensibility in overriding the serializer for the API response results
 - A small DSL around GROQ queries
 
+> [!NOTE]
+> This gem was originally developed in early 2021 to facilitate Morning Brew's content migration from Rails to Sanity. It was subsequently used to enable interaction between Morning Brew's Rails-based Advertising CMS and their Sanity-based Editorial CMS for another ~year. The gem is no longer actively used in production as the Rails applications have since been deprecated, but it remains available as an open-source solution for Rails-Sanity integrations.
+
+> [!WARNING]
+> If you're looking for a way to host Sanity within a Rails application, this gem is not the solution.
+
 ## Contents
 
 - [Sanity](#sanity)
