@@ -32,14 +32,13 @@ module Sanity
 
       def uri
         super.tap do |obj|
-          query = {}
-          if perspective
-            query[:perspective] = perspective
-          end
           if use_post
-            query.merge!(query_and_variables)
+            if perspective
+              obj.query = URI.encode_www_form(perspective: perspective)
+            end
+          else
+            obj.query = URI.encode_www_form(query_and_variables.merge({perspective: perspective}.compact))
           end
-          obj.query = URI.encode_www_form(query) unless query.empty?
         end
       end
 
