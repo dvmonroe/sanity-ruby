@@ -32,7 +32,14 @@ module Sanity
 
       def uri
         super.tap do |obj|
-          obj.query = URI.encode_www_form(query_and_variables) unless use_post
+          query = {}
+          if perspective
+            query[:perspective] = perspective
+          end
+          if use_post
+            query.merge!(query_and_variables)
+          end
+          obj.query = URI.encode_www_form(query) unless query.empty?
         end
       end
 
@@ -45,7 +52,7 @@ module Sanity
               hash["$#{key}"] = "\"#{value}\""
             end
           end
-        end.merge({query: groq_query, perspective: perspective}.compact)
+        end.merge(query: groq_query)
       end
 
       def groq_query
