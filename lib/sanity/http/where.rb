@@ -10,16 +10,17 @@ module Sanity
       delegate where_api_endpoint: :resource_klass
       alias_method :api_endpoint, :where_api_endpoint
 
-      attr_reader :groq, :use_post, :groq_attributes, :variables
+      attr_reader :groq, :use_post, :groq_attributes, :variables, :perspective
 
       def initialize(**args)
         super
         @groq = args.delete(:groq) || ""
         @variables = args.delete(:variables) || {}
         @use_post = args.delete(:use_post) || false
+        @perspective = args.delete(:perspective)
 
         @groq_attributes = args.except(
-          :groq, :use_post, :resource_klass, :serializer, :result_wrapper
+          :groq, :use_post, :resource_klass, :serializer, :result_wrapper, :perspective
         )
       end
 
@@ -44,7 +45,7 @@ module Sanity
               hash["$#{key}"] = "\"#{value}\""
             end
           end
-        end.merge(query: groq_query)
+        end.merge({query: groq_query, perspective: perspective}.compact)
       end
 
       def groq_query
