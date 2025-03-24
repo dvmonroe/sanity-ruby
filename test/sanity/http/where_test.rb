@@ -7,19 +7,7 @@ describe Sanity::Http::Where do
   let(:resource_class) do
     Class.new do
       def self.where_api_endpoint
-        "query/production"
-      end
-
-      def self.project_id
-        "test-project"
-      end
-
-      def self.dataset
-        "production"
-      end
-
-      def self.api_version
-        "v1"
+        "test"
       end
     end
   end
