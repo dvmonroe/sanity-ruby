@@ -19,23 +19,25 @@ describe Sanity::Http::Where do
       describe "with different variable types" do
         let(:variables) do
           {
-            "string_var" => "hello",
-            "array_var" => [1, 2, 3],
-            "hash_var" => {"foo" => "bar"},
-            "number_var" => 42,
-            "boolean_var" => true
+            string_var: "hello",
+            array_var: [1, 2, 3],
+            array_of_strings: ["foo", "bar"],
+            hash_var: {"foo" => "bar"},
+            number_var: 42,
+            boolean_var: true
           }
         end
 
         it "properly serializes variables in the query string" do
           uri = subject.send(:uri)
-          query_params = URI.decode_www_form(uri.query).to_h
+          decoded_query = URI.decode_www_form_component(uri.query)
 
-          assert_equal "\"hello\"", query_params["$string_var"]
-          assert_equal "[1,2,3]", query_params["$array_var"]
-          assert_equal "{\"foo\":\"bar\"}", query_params["$hash_var"]
-          assert_equal "42", query_params["$number_var"]
-          assert_equal "true", query_params["$boolean_var"]
+          assert_includes decoded_query, "$string_var=\"hello\""
+          assert_includes decoded_query, "$array_var=[1,2,3]"
+          assert_includes decoded_query, "$array_of_strings=[\"foo\",\"bar\"]"
+          assert_includes decoded_query, "$hash_var={\"foo\":\"bar\"}"
+          assert_includes decoded_query, "$number_var=42"
+          assert_includes decoded_query, "$boolean_var=true"
         end
       end
     end
