@@ -41,7 +41,7 @@ module Sanity
         else
           {}.tap do |hash|
             variables.each do |key, value|
-              hash["$#{key}"] = "\"#{value}\""
+              hash["$#{key}"] = serialize_variable_value(value)
             end
           end
         end.merge(query: groq_query)
@@ -55,6 +55,17 @@ module Sanity
         return unless use_post
 
         query_and_variables.to_json
+      end
+
+      def serialize_variable_value(value)
+        case value
+        when String
+          "\"#{value}\""
+        when Array, Hash
+          value.to_json
+        else
+          value.to_s
+        end
       end
     end
   end
