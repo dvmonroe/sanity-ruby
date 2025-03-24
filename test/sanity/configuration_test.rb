@@ -5,6 +5,17 @@ require "test_helper"
 describe Sanity::Configuration do
   subject { Sanity::Configuration.new }
 
+  after do
+    Sanity.use_global_config = false
+    Sanity.configure do |config|
+      config.project_id = ""
+      config.dataset = ""
+      config.api_version = ""
+      config.token = ""
+      config.use_cdn = false
+    end
+  end
+
   it { assert_equal "", subject.project_id }
   it { assert_equal "", subject.dataset }
   it { assert_equal "", subject.api_version }
