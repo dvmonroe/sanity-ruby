@@ -15,8 +15,8 @@ gem "yard"
 
 gem "standard"
 
-if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.0')
-  gem 'ffi', '~> 1.16.3'
+if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
+  gem "ffi", "~> 1.16.3"
 else
-  gem 'ffi'
+  gem "ffi"
 end
