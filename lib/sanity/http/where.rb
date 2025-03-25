@@ -10,16 +10,17 @@ module Sanity
       delegate where_api_endpoint: :resource_klass
       alias_method :api_endpoint, :where_api_endpoint
 
-      attr_reader :groq, :use_post, :groq_attributes, :variables
+      attr_reader :groq, :use_post, :groq_attributes, :variables, :perspective
 
       def initialize(**args)
         super
         @groq = args.delete(:groq) || ""
         @variables = args.delete(:variables) || {}
         @use_post = args.delete(:use_post) || false
+        @perspective = args.delete(:perspective)
 
         @groq_attributes = args.except(
-          :groq, :use_post, :resource_klass, :serializer, :result_wrapper
+          :groq, :use_post, :resource_klass, :serializer, :result_wrapper, :perspective
         )
       end
 
@@ -31,7 +32,13 @@ module Sanity
 
       def uri
         super.tap do |obj|
-          obj.query = URI.encode_www_form(query_and_variables) unless use_post
+          if use_post
+            if perspective
+              obj.query = URI.encode_www_form(perspective: perspective)
+            end
+          else
+            obj.query = URI.encode_www_form(query_and_variables.merge({perspective: perspective}.compact))
+          end
         end
       end
 
