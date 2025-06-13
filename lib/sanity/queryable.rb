@@ -34,6 +34,14 @@ module Sanity
         where: "data/query"
       }.freeze
 
+      def sanity_type
+        @sanity_type || Sanity::TypeHelper.default_type(self)
+      end
+
+      def sanity_type=(_type)
+        @sanity_type = _type
+      end
+
       private
 
       def queryable(**options)
@@ -44,7 +52,7 @@ module Sanity
 
       def define_query_method(query)
         define_singleton_method(query) do |**args|
-          default_type = args.key?(:_type) ? args[:_type] : Sanity::TypeHelper.default_type(self)
+          default_type = args.key?(:_type) ? args[:_type] : sanity_type
           default_args = {resource_klass: self, _type: default_type}.compact
           Module.const_get("Sanity::Http::#{query.to_s.classify}").call(**default_args.merge(args))
         end

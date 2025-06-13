@@ -56,5 +56,32 @@ describe Sanity::Queryable do
       it { refute_respond_to subject, :find }
       it { refute_respond_to subject, :where }
     end
+
+    context "no sanity_type defined" do
+      subject {
+        Class.new do
+          include Sanity::Queryable
+          queryable
+        end
+      }
+
+      it "returns lower class name" do
+        assert_equal "class", subject.sanity_type
+      end
+    end
+
+    context "sanity_type defined" do
+      subject {
+        Class.new do
+          include Sanity::Queryable
+          queryable
+          sanity_type="a_sanity_resource"
+        end
+      }
+
+      it "returns lower class name" do
+        assert_equal "a_sanity_resource", subject.sanity_type
+      end
+    end
   end
 end
