@@ -127,6 +127,12 @@ class User < Sanity::Resource
   queryable
   publishable
 end
+
+# If your class name doesn't match the Sanity document type, use `document_type`:
+class Cms::BlogPost < Sanity::Resource
+  self.document_type = :post
+  # ...
+end
 ```
 
 
@@ -357,6 +363,7 @@ groq_query = <<-GROQ
 GROQ
 
 Sanity::Document.where(groq: groq_query, variables: {name: "Monsters, Inc."})
+# Note: symbols are treated like strings when passed as variables
 ```
 
 
