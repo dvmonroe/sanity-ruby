@@ -7,6 +7,7 @@ module Sanity
   module Http
     class Where
       include Sanity::Http::Query
+
       delegate where_api_endpoint: :resource_klass
       alias_method :api_endpoint, :where_api_endpoint
 

@@ -27,7 +27,7 @@ module Sanity
         return unless select
 
         Array.wrap(select).each_with_index do |x, idx|
-          val << "#{idx.positive? ? "," : ""} #{x}"
+          val << "#{"," if idx.positive?} #{x}"
         end
 
         "{ #{val.strip} }"

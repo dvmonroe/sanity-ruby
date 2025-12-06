@@ -8,6 +8,7 @@ describe Sanity::Mutatable do
       let(:klass) {
         Class.new do
           include Sanity::Mutatable
+
           mutatable
         end
       }
@@ -29,6 +30,7 @@ describe Sanity::Mutatable do
       let(:klass) {
         Class.new do
           include Sanity::Mutatable
+
           mutatable only: %i[create patch]
         end
       }

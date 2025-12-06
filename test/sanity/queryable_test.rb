@@ -8,6 +8,7 @@ describe Sanity::Queryable do
       subject {
         Class.new do
           include Sanity::Queryable
+
           queryable
         end
       }
@@ -20,6 +21,7 @@ describe Sanity::Queryable do
       subject {
         Class.new do
           include Sanity::Queryable
+
           queryable only: %i[where]
         end
       }
@@ -32,6 +34,7 @@ describe Sanity::Queryable do
       subject {
         Class.new do
           include Sanity::Queryable
+
           queryable
         end
       }
@@ -49,6 +52,7 @@ describe Sanity::Queryable do
       subject {
         Class.new do
           include Sanity::Queryable
+
           queryable only: []
         end
       }

@@ -62,6 +62,7 @@ describe Sanity::Serializable do
       subject {
         Class.new do
           include Sanity::Serializable
+
           serializer CustomSerializer
         end
       }
