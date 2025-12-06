@@ -59,7 +59,7 @@ module Sanity
 
       def serialize_variable_value(value)
         case value
-        when String
+        when String, Symbol
           "\"#{value}\""
         when Array, Hash
           value.to_json

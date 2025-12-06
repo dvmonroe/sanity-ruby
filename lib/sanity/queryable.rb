@@ -28,6 +28,8 @@ module Sanity
     module ClassMethods
       DEFAULT_KLASS_QUERIES = %i[find where].freeze
 
+      attr_accessor :document_type
+
       # See https://www.sanity.io/docs/http-query & https://www.sanity.io/docs/http-doc
       QUERY_ENDPOINTS = {
         find: "data/doc",

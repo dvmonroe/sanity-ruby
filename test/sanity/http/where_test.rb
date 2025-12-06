@@ -24,6 +24,7 @@ describe Sanity::Http::Where do
             array_of_strings: ["foo", "bar"],
             hash_var: {"foo" => "bar"},
             number_var: 42,
+            symbol_var: :symbolized_variable,
             boolean_var: true
           }
         end
@@ -38,6 +39,7 @@ describe Sanity::Http::Where do
           assert_includes decoded_query, "$hash_var={\"foo\":\"bar\"}"
           assert_includes decoded_query, "$number_var=42"
           assert_includes decoded_query, "$boolean_var=true"
+          assert_includes decoded_query, "$symbol_var=\"symbolized_variable\""
         end
       end
     end

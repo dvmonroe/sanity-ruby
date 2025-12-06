@@ -22,4 +22,23 @@ describe Sanity::Document do
 
   it { assert_respond_to klass, :find }
   it { assert_respond_to klass, :where }
+
+  describe ".document_type" do
+    it "allows setting a custom type name" do
+      klass.document_type = "custom_type"
+      assert_equal "custom_type", klass.document_type
+    end
+
+    it "returns nil when document_type is not set" do
+      new_klass = Class.new(Sanity::Document)
+      assert_nil new_klass.document_type
+    end
+
+    it "allows setting document_type to nil" do
+      klass.document_type = "custom_type"
+      assert_equal "custom_type", klass.document_type
+      klass.document_type = nil
+      assert_nil klass.document_type
+    end
+  end
 end
